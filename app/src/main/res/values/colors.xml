@@ -2,4 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="pink">#AB6AB3</color>
+    <color name="header">#E1CCE8</color>
+    <color name="received_message_color">#6F6E70</color>
+    <color name="sent_message_color">#8BB461</color>
+    <color name="green">#6F6E70</color>
+    <color name="cool_light_purple">#7265AE</color>
+
 </resources>
