@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+    <style name="FriendMessageStyle">
+        <item name="android:background">@drawable/friend_message_background</item>
+    </style>
+    <style name="MyMessageStyle">
+        <item name="android:background">#E5E5EA</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">end</item>
+    </style>
+</resources>
