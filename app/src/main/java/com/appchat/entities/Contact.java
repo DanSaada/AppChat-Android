@@ -1,4 +1,4 @@
-package com.appchat.models;
+package com.appchat.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;

@@ -5,7 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
-import com.appchat.models.Message;
+import com.appchat.entities.Message;
 import java.util.List;
 
 @Dao

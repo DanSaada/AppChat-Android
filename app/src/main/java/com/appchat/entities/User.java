@@ -1,4 +1,4 @@
-package com.appchat.models;
+package com.appchat.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -7,7 +7,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import com.appchat.models.converters.Base64TypeConverter;
+import com.appchat.entities.converters.Base64TypeConverter;
 
 @Entity
 public class User {

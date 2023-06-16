@@ -6,7 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.appchat.models.User;
+import com.appchat.entities.User;
 
 import java.util.List;
 

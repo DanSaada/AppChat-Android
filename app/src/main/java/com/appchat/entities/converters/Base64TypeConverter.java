@@ -1,4 +1,4 @@
-package com.appchat.models.converters;
+package com.appchat.entities.converters;
 
 import android.util.Base64;
 import androidx.room.TypeConverter;
