@@ -7,63 +7,107 @@
     tools:context=".activities.ChatListActivity"
     android:background="@drawable/gradient_background">
 
-    <!--User Header-->
-    <LinearLayout
-        android:id="@+id/user_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/header"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/profile_image_chat"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="15dp"
-            android:src="@drawable/default_profile_pic" />
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
-            android:layout_marginStart="8dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/contact_nickname_chat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/cool_light_purple"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                tools:text="User Name" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <!--list-->
-    <FrameLayout
-        android:id="@+id/addContactFragmentContainer"
+    <?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="-111dp"
-        tools:layout_editor_absoluteY="0dp" />
+        android:background="@drawable/background">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/lvContacts"
-        android:layout_width="match_parent"
-        android:layout_height="630dp"
-        app:layout_constraintTop_toBottomOf="@+id/user_header" />
+        <!-- Left Container -->
+        <RelativeLayout
+            android:id="@+id/leftContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnAddContact"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="10pt"
-        android:src="@drawable/ic_add_contact"/>
+            <!-- Header -->
+            <RelativeLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="#ededed"
+                android:padding="15dp">
+
+                <TextView
+                    android:id="@+id/logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="WebChat"
+                    android:textSize="18sp"
+                    android:textColor="#000"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/userIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_user"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:padding="10dp"
+                    android:contentDescription="User Icon"
+                    android:onClick="openUserModal" />
+
+            </RelativeLayout>
+
+            <!-- Search Container -->
+            <RelativeLayout
+                android:id="@+id/searchContainer"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/header"
+                android:background="#f6f6f6"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/searchIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_search"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:padding="10dp"
+                    android:contentDescription="Search Icon" />
+
+                <EditText
+                    android:id="@+id/searchInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/searchIcon"
+                    android:layout_centerVertical="true"
+                    android:background="@android:color.transparent"
+                    android:hint="Search or start new chat"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/filterIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_filter"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:padding="10dp"
+                    android:contentDescription="Filter Icon" />
+
+            </RelativeLayout>
+
+            <!-- Chat List -->
+            <ScrollView
+                android:id="@+id/chatListScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/searchContainer">
+
+                <LinearLayout
+                    android:id="@+id/chatList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+            </ScrollView>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
