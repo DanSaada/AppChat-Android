@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".activities.signup">
 
-    <?xml version="1.0" encoding="utf-8"?>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -42,7 +41,6 @@
             android:textColor="#f5f5f5"
             android:textSize="38sp"
             android:textStyle="bold"
-            android:textDecoration="underline"
             android:layout_below="@id/webchatTextView"
             android:layout_alignParentStart="true"
             android:layout_marginStart="10dp"

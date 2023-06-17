@@ -11,8 +11,7 @@
         android:layout_height="45dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:overflow="hidden">
+        android:layout_alignParentBottom="true">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgCover"

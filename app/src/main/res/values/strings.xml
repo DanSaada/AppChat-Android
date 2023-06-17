@@ -3,4 +3,25 @@
     <string name="brand_name">WebChat</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_signup"><u>Sign Up</u></string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="addButton">Add</string>
+    <string name="add_contact">Add Contact</string>
+    <string name="enter_username">Enter Username</string>
+    <string name="webchat">WebChat</string>
+    <string name="webchat_logo">WebChat Logo</string>
+    <string name="user_icon">User Icon</string>
+    <string name="change_display_name">Change Display Name</string>
+    <string name="change_theme">Change Theme</string>
+    <string name="change_language">Change Language</string>
+    <string name="change_app_color">Change App\'s Color</string>
+    <string name="change_server_port">Change Server\'s Port</string>
+    <string name="settings">Settings</string>
+    <string name="change_display_name_icon">Change Display Name Icon</string>
+    <string name="change_theme_icon">Change Theme Icon</string>
+    <string name="change_language_icon">Change Language Icon</string>
+    <string name="change_app_color_icon">Change App Color Icon</string>
+    <string name="change_server_port_icon">Change Server Port Icon</string>
+    <string name="exit_icon">exit icon</string>
 </resources>
+
+
