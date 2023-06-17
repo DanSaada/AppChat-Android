@@ -19,8 +19,8 @@ public class UserRepository {
         this.userAPI.setCallback(callback);
     }
 
-    public void addUser(String username, String password, String nickname, byte[] picture) {
-        userAPI.addUser(username, password, nickname, picture);
+    public void addUser(String username, String password, String displayName, byte[] picture) {
+        userAPI.addUser(username, password, displayName, picture);
     }
 
 

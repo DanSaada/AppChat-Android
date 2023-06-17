@@ -38,9 +38,9 @@ public class UserApi {
         this.callback = callback;
     }
 
-    public void addUser(String username, String password, String displayName, byte[] profilePic) {
+    public void checkTokenForLogin(String username, String password) {
         User user = new User(username, password);
-        Call<JsonPrimitive> call = webServiceApi.postUser(user);
+        Call<JsonPrimitive> call = webServiceApi.createToken(user);
         // start the async network request and attache a callback to handle the response
         call.enqueue(new Callback<JsonPrimitive>() {
             // response is received from the server
@@ -50,8 +50,29 @@ public class UserApi {
                     // extract the logged in user's token
                     String token = response.body().toString();
                     AppStateManager.loggerUserToken = token.substring(1, token.length() - 1);
-                    // create the new User object
-                    User user = new User(username, password, displayName, profilePic);
+                    callback.onSuccess();
+                } else {
+                    callback.onFail();
+                }
+            }
+            // failure in the network request.
+            @Override
+            public void onFailure(@NonNull Call<JsonPrimitive> call, @NonNull Throwable t) {
+                callback.onFail();
+            }
+        });
+    }
+
+    public void addUser(String username, String password, String displayName, byte[] profilePic) {
+        // create the new User object
+        User user = new User(username, password, displayName, profilePic);
+        Call<JsonPrimitive> call = webServiceApi.postUser(user);
+        // start the async network request and attache a callback to handle the response
+        call.enqueue(new Callback<JsonPrimitive>() {
+            // response is received from the server
+            @Override
+            public void onResponse(@NonNull Call<JsonPrimitive> call, @NonNull Response<JsonPrimitive> response) {
+                if (response.isSuccessful() && response.code() == 200 && response.body() != null) {
                     // add new user to the room database
                     userDao.insert(user);
                     callback.onSuccess();
@@ -59,7 +80,6 @@ public class UserApi {
                     callback.onFail();
                 }
             }
-
             // failure in the network request.
             @Override
             public void onFailure(@NonNull Call<JsonPrimitive> call, @NonNull Throwable t) {

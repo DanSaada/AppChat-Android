@@ -10,6 +10,7 @@ public class AppStateManager extends Application {
     public static String loggedUser;
     public static String loggerUserToken;
     public static boolean isLogged;
+    public static String contactId;
     public static UsersDB usersDB;
     public static String serverUrl;
     public static String serverPort;
@@ -17,13 +18,14 @@ public class AppStateManager extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        serverUrl = this.getString(R.string.serverUrl);
-        serverPort = this.getString(R.string.serverPort);
         context = getApplicationContext();
         loggedUser = null;
         loggerUserToken = null;
         isLogged = false;
+        contactId = null;
         usersDB = Room.databaseBuilder(context, UsersDB.class, "user")
                 .allowMainThreadQueries().fallbackToDestructiveMigration().build();
+        serverUrl = this.getString(R.string.serverUrl);
+        serverPort = this.getString(R.string.serverPort);
     }
 }
