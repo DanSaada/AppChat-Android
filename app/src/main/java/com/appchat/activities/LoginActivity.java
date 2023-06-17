@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.appchat.R;
 
-public class login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +18,7 @@ public class login extends AppCompatActivity {
 
         TextView signUpTextView = findViewById(R.id.signupTextView);
         signUpTextView.setOnClickListener(v -> {
-           Intent intent = new Intent(login.this, signup.class);
+           Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
               startActivity(intent);
         });
 
@@ -26,7 +26,7 @@ public class login extends AppCompatActivity {
         loginButton.setOnClickListener(v -> {
              //TODO: make sure that the username and password are correct and then go to the chat list activity
             //Otherwise, show an error message and stay in the current activity
-            Intent intent = new Intent(login.this, ChatListActivity.class);
+            Intent intent = new Intent(LoginActivity.this, ChatListActivity.class);
             startActivity(intent);
         });
     }
