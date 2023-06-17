@@ -22,6 +22,11 @@
     <string name="change_app_color_icon">Change App Color Icon</string>
     <string name="change_server_port_icon">Change Server Port Icon</string>
     <string name="exit_icon">exit icon</string>
+    <string name="user_profile_picture">user profile picture</string>
+    <string name="username">Username</string>
+    <string name="username_required_error">Invalid Username</string>
+    <string name="password_required_error">Invalid Password</string>
+    <string name="password_mismatch_error">Password Mismatching</string>
 </resources>
 
 

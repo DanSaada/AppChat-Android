@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <!-- Define the Material Components theme -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
-    <style name="FriendMessageStyle">
+
+    <!-- Apply Material Components style to FriendMessageStyle -->
+    <style name="FriendMessageStyle" parent="Widget.MaterialComponents.CardView">
         <item name="android:background">@drawable/friend_message_background</item>
     </style>
-    <style name="MyMessageStyle">
+
+    <!-- Apply Material Components style to MyMessageStyle -->
+    <style name="MyMessageStyle" parent="Widget.MaterialComponents.CardView">
         <item name="android:background">#E5E5EA</item>
         <item name="android:padding">16dp</item>
         <item name="android:layout_width">match_parent</item>
