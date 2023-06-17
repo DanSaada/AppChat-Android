@@ -205,7 +205,7 @@
                     android:textColor="#fff"
                     android:textSize="20sp"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="20dp" />
+                    android:layout_marginBottom="20dp"/>
 
                 <TextView
                     android:id="@+id/signInTextView"
