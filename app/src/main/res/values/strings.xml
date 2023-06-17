@@ -22,4 +22,5 @@
     <string name="change_language_icon">Change Language Icon</string>
     <string name="change_app_color_icon">Change App Color Icon</string>
     <string name="change_server_port_icon">Change Server Port Icon</string>
+    <string name="exit_icon">exit icon</string>
 </resources>

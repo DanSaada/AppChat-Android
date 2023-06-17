@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="78dp"
         android:background="#ededed"
         android:padding="15dp">
 
@@ -16,7 +16,7 @@
             android:id="@+id/logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="WebChat"
+            android:text="@string/webchat"
             android:textSize="18sp"
             android:textColor="#000"
             android:textStyle="bold" />
@@ -28,17 +28,17 @@
             android:layout_toEndOf="@id/logo"
             android:layout_marginStart="8dp"
             android:src="@drawable/webchat_logo"
-            android:contentDescription="WebChat Logo" />
+            android:contentDescription="@string/webchat_logo" />
 
         <ImageView
-            android:id="@+id/userIcon"
+            android:id="@+id/Exit"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_user"
+            android:src="@drawable/ic_exit"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:padding="10dp"
-            android:contentDescription="User Icon"
+            android:contentDescription="@string/exit_icon"
             android:onClick="openUserModal" />
 
     </RelativeLayout>
@@ -67,7 +67,7 @@
                     android:layout_width="24dp"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_add_contact"
-                    android:contentDescription="Add Contact"
+                    android:contentDescription="@string/add_contact"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="90dp"/>
 
@@ -92,7 +92,8 @@
                 android:padding="12dp"
                 android:textColor="#707070"
                 android:textColorHint="#707070"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:inputType="text"/>
 
             <Button
                 android:id="@+id/loginButton"

@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="78dp"
         android:background="#ededed"
         android:padding="15dp">
 
@@ -32,15 +32,16 @@
             android:contentDescription="@string/webchat_logo" />
 
         <ImageView
-            android:id="@+id/userIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_user"
+            android:id="@+id/Exit"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_exit"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:padding="10dp"
-            android:contentDescription="@string/user_icon"
+            android:contentDescription="@string/exit_icon"
             android:onClick="openUserModal" />
+
 
     </RelativeLayout>
 
