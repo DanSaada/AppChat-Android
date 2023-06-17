@@ -3,5 +3,4 @@
     <string name="brand_name">WebChat</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_signup"><u>Sign Up</u></string>
-    <string name="search_or_start_new_chat">Search or start new chat</string>
 </resources>

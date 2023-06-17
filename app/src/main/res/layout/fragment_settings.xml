@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_image">
+
+    <!-- Header -->
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="78dp"
+        android:background="#ededed"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/webchat"
+            android:textSize="18sp"
+            android:textColor="#000"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/logoImageView"
+            android:layout_width="22dp"
+            android:layout_height="21dp"
+            android:layout_toEndOf="@id/logo"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/webchat_logo"
+            android:contentDescription="@string/webchat_logo" />
+
+        <ImageView
+            android:id="@+id/Exit"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_exit"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:contentDescription="@string/exit_icon"
+            android:onClick="openUserModal" />
+
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/glassmorphism_background"
+            android:padding="12dp"
+            android:layout_marginStart="@dimen/_10sp"
+            android:layout_marginEnd="@dimen/_10sp">
+
+            <!-- Settings Icon and Text -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_settings"
+                    android:contentDescription="@string/settings"
+                    android:layout_marginBottom="@dimen/_10sp"
+                    android:layout_marginStart="130dp"
+                    android:layout_marginTop="3dp"/>
+
+                <TextView
+                    android:id="@+id/addContactText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingStart="2dp"
+                    android:paddingBottom="16dp"
+                    android:text="@string/settings"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:ignore="RtlSymmetry" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/changeDisplayNameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/changeDisplayNameIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/change_display_name_icon"
+                    android:src="@drawable/ic_display_name"
+                    android:layout_marginBottom="@dimen/_10sp"/>
+
+                <Button
+                    android:id="@+id/changeDisplayNameButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/login_button_background"
+                    android:text="@string/change_display_name"
+                    android:textColor="#fff"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="@dimen/_10sp"
+                    android:layout_marginStart="5dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/changeThemeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/changeThemeIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_theme_mode"
+                    android:contentDescription="@string/change_theme_icon" />
+
+                <Button
+                    android:id="@+id/changeThemeButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/login_button_background"
+                    android:text="@string/change_theme"
+                    android:textColor="#fff"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="@dimen/_10sp"
+                    android:layout_marginStart="5dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/changeLanguageLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/changeLanguageIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_language"
+                    android:contentDescription="@string/change_language_icon" />
+
+                <Button
+                    android:id="@+id/changeLanguageButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/login_button_background"
+                    android:text="@string/change_language"
+                    android:textColor="#fff"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="@dimen/_10sp"
+                    android:layout_marginStart="5dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/changeAppColorLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/changeAppColorIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_app_color"
+                    android:contentDescription="@string/change_app_color_icon" />
+
+                <Button
+                    android:id="@+id/changeAppColorButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/login_button_background"
+                    android:text="@string/change_app_color"
+                    android:textColor="#fff"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="@dimen/_10sp"
+                    android:layout_marginStart="5dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/changeServerPortLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/changeServerPortIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_server_port"
+                    android:contentDescription="@string/change_server_port_icon" />
+
+                <Button
+                    android:id="@+id/changeServerPortButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/login_button_background"
+                    android:text="@string/change_server_port"
+                    android:textColor="#fff"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="@dimen/_10sp"
+                    android:layout_marginStart="5dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
