@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.appchat.R;
+import com.appchat.activities.SignupActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
