@@ -20,7 +20,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appchat.R;
+import com.appchat.activities.signupServices.SignupErrors;
+import com.appchat.activities.signupServices.ValidateInputsService;
 import com.google.android.material.textfield.TextInputLayout;
+
 
 import java.io.IOException;
 
@@ -40,6 +43,8 @@ public class SignupActivity extends AppCompatActivity {
     private TextInputLayout usernameTextInputLayout;
     private TextInputLayout passwordTextInputLayout;
     private TextInputLayout confirmPasswordTextInputLayout;
+    private TextInputLayout displayNameTextInputLayout;
+
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -63,6 +68,7 @@ public class SignupActivity extends AppCompatActivity {
         usernameTextInputLayout = findViewById(R.id.usernameTextInputLayout);
         passwordTextInputLayout = findViewById(R.id.passwordTextInputLayout);
         confirmPasswordTextInputLayout = findViewById(R.id.confirmPasswordTextInputLayout);
+        displayNameTextInputLayout = findViewById(R.id.displayNameTextInputLayout);
 
         imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
@@ -83,6 +89,7 @@ public class SignupActivity extends AppCompatActivity {
         // TODO: Add validation for all fields
         Button registerBtn = findViewById(R.id.registerButton);
         registerBtn.setOnClickListener(v -> {
+            boolean flag = true;
             // Save the input from each field
             String username = usernameEditText.getText().toString();
             String password = passwordEditText.getText().toString();
@@ -95,24 +102,34 @@ public class SignupActivity extends AppCompatActivity {
             confirmPasswordTextInputLayout.setError(null);
 
             // Perform validation and show error messages if necessary
-            if (username.isEmpty()) {
-                usernameTextInputLayout.setError(getString(R.string.username_required_error));
-                usernameTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+                SignupErrors usernameError = ValidateInputsService.validateUsername(username);
+                if (usernameError != SignupErrors.OK || username.isEmpty()) {
+                    usernameTextInputLayout.setError("Invalid username");
+                    usernameTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+                    flag = false;
+                }
+                SignupErrors passwordError = ValidateInputsService.validatePassword(password);
+                if (passwordError != SignupErrors.OK || password.isEmpty()) {
+                    passwordTextInputLayout.setError(getString(R.string.password_required_error));
+                    passwordTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+                    flag = false;
             }
-
-            if (password.isEmpty()) {
-                passwordTextInputLayout.setError(getString(R.string.password_required_error));
-                passwordTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+                SignupErrors confirmPasswordError = ValidateInputsService.
+                        validateConfirmPassword(password, confirmPassword);
+                if (confirmPasswordError != SignupErrors.OK || confirmPassword.isEmpty()) {
+                    confirmPasswordTextInputLayout.setError(getString(R.string.password_mismatch_error));
+                    confirmPasswordTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+                    flag = false;
+                }
+                SignupErrors displayNameError = ValidateInputsService.validateDisplayName(displayName);
+                if (displayNameError != SignupErrors.OK || displayName.isEmpty()) {
+                    displayNameTextInputLayout.setError(getString(R.string.display_name_required_error));
+                    displayNameTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+                    flag = false;
+                }
+            if (flag) {
+                finish();
             }
-
-            if (!password.equals(confirmPassword)) {
-                confirmPasswordTextInputLayout.setError(getString(R.string.password_mismatch_error));
-                confirmPasswordTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
-            }
-
-            // You can now use these values as per your requirement (e.g., saving to a database or performing further operations)
-
-            finish();
         });
     }
 
@@ -127,10 +144,10 @@ public class SignupActivity extends AppCompatActivity {
 
             // Rotate the image if necessary
             Matrix matrix = new Matrix();
-            matrix.postRotate(90); // Specify the angle of rotation here
             Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
 
             profileImageView.setImageBitmap(rotatedBitmap);
+            profileImageView.setVisibility(View.VISIBLE); // Set the visibility of profileImageView to visible
         } catch (IOException e) {
             e.printStackTrace();
         }

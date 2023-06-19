@@ -17,7 +17,7 @@ public class ValidateInputsService {
         return SignupErrors.OK;
     }
 
-    private static SignupErrors validatePassword(@NonNull String input) {
+    public static SignupErrors validatePassword(@NonNull String input) {
 
         if (input.isEmpty()) {
             return SignupErrors.EMPTY_FIELD;
@@ -34,7 +34,7 @@ public class ValidateInputsService {
         return SignupErrors.OK;
     }
 
-    private static SignupErrors validateConfirmPassword(String password, @NonNull String confirmPassword) {
+    public static SignupErrors validateConfirmPassword(String password, @NonNull String confirmPassword) {
         if (confirmPassword.isEmpty()) {
             return SignupErrors.EMPTY_FIELD;
         }

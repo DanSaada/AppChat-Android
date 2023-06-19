@@ -27,6 +27,6 @@
     <string name="username_required_error">Invalid Username</string>
     <string name="password_required_error">Invalid Password</string>
     <string name="password_mismatch_error">Password Mismatching</string>
-    <string name="display_name_required_error">Invalid Display Name</string>
-    <string name="display_name">Display Name</string>
 </resources>
+
+

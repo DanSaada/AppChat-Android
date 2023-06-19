@@ -64,7 +64,7 @@
                     android:id="@+id/usernameTextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="3dp"
                     android:hint="@string/username"
                     app:helperTextEnabled="true"
                     app:helperText="helper text">
@@ -81,7 +81,7 @@
                     android:id="@+id/passwordTextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="3dp"
                     android:hint="Password"
                     app:endIconMode="password_toggle"
                     app:helperTextEnabled="true"
@@ -100,7 +100,7 @@
                     android:id="@+id/confirmPasswordTextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="3dp"
                     android:hint="Confirm Password"
                     app:endIconMode="password_toggle"
                     app:helperTextEnabled="true"
@@ -118,15 +118,19 @@
                     android:id="@+id/displayNameTextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:hint="Display Name">
+                    android:layout_marginBottom="3dp"
+                    android:hint="@string/display_name"
+                    app:helperTextEnabled="true"
+                    app:helperText="helper text">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/displayNameEditText"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -141,7 +145,7 @@
                         android:textColor="#212529"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:layout_marginBottom="7dp"/>
+                        android:layout_marginBottom="3dp"/>
 
                     <Button
                         android:id="@+id/uploadPictureButton"
