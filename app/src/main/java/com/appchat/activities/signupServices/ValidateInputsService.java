@@ -57,11 +57,17 @@ public class ValidateInputsService {
             return SignupErrors.EMPTY_FIELD;
         }
 
-        String regex = "^(?=[a-zA-Z0-9_\\-#@]{4,}$)(?=.*[a-zA-Z]{3,})(?=.*\\d)";
-        boolean isValidInput = displayName.matches(regex);
-        if (!isValidInput) {
+        if (displayName.length() < 4) {
             return SignupErrors.DISPLAY_NAME_NOT_VALID;
         }
+
+        // TODO: change later to check with simple regex
+//        String regex = "^(?=[a-zA-Z0-9_\\-#@]{4,}$)(?=.*[a-zA-Z]{3,})(?=.*\\d)";
+
+//        boolean isValidInput = displayName.matches(regex);
+//        if (!isValidInput) {
+//            return SignupErrors.DISPLAY_NAME_NOT_VALID;
+//        }
         return SignupErrors.OK;
     }
 }

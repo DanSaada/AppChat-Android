@@ -1,9 +1,5 @@
 package com.appchat.activities;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -19,16 +15,23 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.appchat.OperationCallback;
 import com.appchat.R;
 import com.appchat.activities.signupServices.SignupErrors;
 import com.appchat.activities.signupServices.ValidateInputsService;
+import com.appchat.entities.converters.Base64TypeConverter;
+import com.appchat.viewModels.UserViewModel;
 import com.google.android.material.textfield.TextInputLayout;
-
 
 import java.io.IOException;
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity implements OperationCallback {
 
     private ImageView profileImageView;
     private Button uploadPictureBtn;
@@ -46,11 +49,17 @@ public class SignupActivity extends AppCompatActivity {
     private TextInputLayout confirmPasswordTextInputLayout;
     private TextInputLayout displayNameTextInputLayout;
 
+    private UserViewModel userViewModel;
+    private boolean isSignupSuccessful;
+
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        isSignupSuccessful = false;
+        this.userViewModel = new UserViewModel();
         setContentView(R.layout.activity_signup);
 
         TextView signUpTextView = findViewById(R.id.signInTextView);
@@ -93,7 +102,6 @@ public class SignupActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // TODO: Add validation for all fields
         Button registerBtn = findViewById(R.id.registerButton);
         registerBtn.setOnClickListener(v -> {
             boolean flag = true;
@@ -135,7 +143,16 @@ public class SignupActivity extends AppCompatActivity {
                     flag = false;
                 }
             if (flag) {
-                finish();
+                this.userViewModel.setCallback(this);
+                byte[] profileImage = Base64TypeConverter.fromBase64String(profileImageView.toString());
+                this.userViewModel.registerUser(username, password, displayName, profileImage);
+                if (isSignupSuccessful) {
+                    Toast.makeText(this, "Signup successful", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                else {
+                    Toast.makeText(this, "Signup failed", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -158,5 +175,15 @@ public class SignupActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onSuccess() {
+        this.isSignupSuccessful = true;
+    }
+
+    @Override
+    public void onFail() {
+        this.isSignupSuccessful = false;
     }
 }

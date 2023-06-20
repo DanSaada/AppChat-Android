@@ -74,15 +74,26 @@ public class UserApi {
             public void onResponse(@NonNull Call<JsonPrimitive> call, @NonNull Response<JsonPrimitive> response) {
                 if (response.isSuccessful() && response.code() == 200 && response.body() != null) {
                     // add new user to the room database
+
+                    // debug
+                    System.out.println("UserApi.addUser(): " + response.body().toString());
+                    // end debug
                     userDao.insert(user);
                     callback.onSuccess();
                 } else {
+
+                    // debug
+                    System.out.println("UserApi.addUser(): failed -  " + response.body().toString());
+                    // end debug
                     callback.onFail();
                 }
             }
             // failure in the network request.
             @Override
             public void onFailure(@NonNull Call<JsonPrimitive> call, @NonNull Throwable t) {
+                // debug
+                System.out.println("UserApi.addUser(): failed - from onFailure() " + t.getMessage());
+                // end debug
                 callback.onFail();
             }
         });
