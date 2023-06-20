@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Define the Material Components theme -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <!-- Light Mode Theme -->
+    <style name="AppThemeLight" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <!-- Dark Mode Theme -->
+    <style name="AppThemeDark" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:windowBackground">@android:color/background_dark</item>
     </style>
 
     <!-- Apply Material Components style to FriendMessageStyle -->
