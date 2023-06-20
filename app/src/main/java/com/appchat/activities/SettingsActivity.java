@@ -1,6 +1,6 @@
 package com.appchat.activities;
 
-import android.content.res.Configuration;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
@@ -13,6 +13,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private int previousUiMode;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +24,7 @@ public class SettingsActivity extends AppCompatActivity {
             int currentUiMode = getResources().getConfiguration().uiMode;
             if (currentUiMode != previousUiMode) {
                 // The app theme has changed
-                showToastMessage("App theme changed");
+                showToastMessage();
             }
 
             if (changeThemeButton.getText().equals("Dark Theme")) {
@@ -42,7 +43,7 @@ public class SettingsActivity extends AppCompatActivity {
         getApplicationContext().setTheme(themeResId);
     }
 
-    private void showToastMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    private void showToastMessage() {
+        Toast.makeText(this, "App theme changed", Toast.LENGTH_SHORT).show();
     }
 }
