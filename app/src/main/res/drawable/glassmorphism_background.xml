@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Outer Gradient -->
+    <gradient
+        android:angle="135"
+        android:endColor="#40EC17DD"
+        android:startColor="#404662F2"
+        android:type="linear" />
+
+    <!-- Inner Gradient -->
+    <gradient
+        android:angle="135"
+        android:endColor="#DDE60BEE"
+        android:startColor="#6658E0EE"
+        android:type="linear" />
+
+    <!-- Background Color -->
+    <solid android:color="#90FDFDFD" />
+
+    <!-- Corner Radius -->
+    <corners android:radius="24dp" />
+</shape>

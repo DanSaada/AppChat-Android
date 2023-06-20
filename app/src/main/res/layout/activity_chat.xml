@@ -1,86 +1,187 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<!-- activity_chat.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
-    tools:context=".activities.ChatActivity">
+    android:layout_height="match_parent">
 
-    <!--contact header-->
+    <!-- Right Container -->
     <LinearLayout
-        android:id="@+id/contact_header_chat"
+        android:id="@+id/rightContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/header"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/profile_image_chat"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:layout_marginStart="15dp"
-            android:src="@drawable/default_profile_pic" />
+        <!-- Header -->
+        <RelativeLayout
+            android:id="@+id/rightHeader"
+            android:layout_width="match_parent"
+            android:layout_height="69dp"
+            android:background="#ededed"
+            android:padding="15dp">
 
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
-            android:layout_marginStart="8dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/contact_nickname_chat"
+            <LinearLayout
+                android:id="@+id/imgTextContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/cool_light_purple"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                tools:text="User Name" />
-        </LinearLayout>
-    </LinearLayout>
+                android:orientation="horizontal">
 
-    <!--list of messages-->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/message_list_chat"
-        android:layout_width="410dp"
-        android:layout_height="572dp"
-        android:clipToPadding="false"
-        android:orientation="vertical"
-        android:padding="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/send_msg_bar_chat"
-        app:layout_constraintTop_toBottomOf="@+id/contact_header_chat"
-        app:layout_constraintVertical_bias="0.0"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"></androidx.recyclerview.widget.RecyclerView>
+                <ImageView
+                    android:id="@+id/userImg"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="@dimen/_4dp"
+                    android:background="@drawable/circle_profile_picture"
+                    android:contentDescription="Profile Picture"
+                    android:src="@mipmap/ofir_profile_picture_round" />
 
-    <!--send message bar-->
-    <LinearLayout
-        android:id="@+id/send_msg_bar_chat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/et_send_msg_chat"
+                    <TextView
+                        android:id="@+id/userName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ofir"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/userStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Online"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/navIconsContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="Search Icon"
+                    android:src="@drawable/ic_magnifying_glass" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="More Options Icon"
+                    android:src="@drawable/ic_ellipsis_vertical" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <!-- Chat Container -->
+        <LinearLayout
+            android:id="@+id/chatContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@drawable/ic_round_input_box"
-            android:inputType="text"></EditText>
+            android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/send_msg_btn_chat"
+            <!-- Chat Messages -->
+            <ScrollView
+                android:id="@+id/chatMessagesScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_image">
+
+                <LinearLayout
+                    android:id="@+id/chatMessages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Chat Message (Example) -->
+                    <LinearLayout
+                        android:id="@+id/chatMessage1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/_10sp"
+                        android:layout_marginRight="@dimen/_4dp"
+                        android:elevation="10dp"
+                        style="@style/FriendMessageStyle">
+
+                        <TextView
+                            android:id="@+id/messageText1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Hey Ofir, what are your plans for the weekend?"
+                            android:textSize="16sp"
+                            android:textAlignment="viewEnd"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp" />
+
+                        <TextView
+                            android:id="@+id/messageTime1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="07:43"
+                            android:textSize="12sp"
+                            android:textAlignment="viewEnd"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            />
+                    </LinearLayout>
+
+                    <!-- Add more message views here -->
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </LinearLayout>
+
+        <!-- Input Bottom -->
+        <LinearLayout
+            android:id="@+id/inputBottom"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="9"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_send"></ImageButton>
+            android:layout_height="60dp"
+            android:background="#ededed"
+            android:padding="10dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_face_grin"
+                android:contentDescription="Emoji Icon" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_paperclip"
+                android:contentDescription="Attachment Icon"
+                android:layout_marginStart="10dp" />
+
+            <EditText
+                android:id="@+id/messageInput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Type a message"
+                android:inputType="text"
+                style="@style/InputBoxStyle" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_send"
+                android:contentDescription="Send Icon"
+                android:layout_marginStart="10dp" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
