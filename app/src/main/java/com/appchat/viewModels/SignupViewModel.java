@@ -16,6 +16,8 @@ public class SignupViewModel extends ViewModel {
     private MutableLiveData<SignupErrors> passwordError;
     private MutableLiveData<SignupErrors> confirmPasswordError;
     private MutableLiveData<SignupErrors> displayNameError;
+    private MutableLiveData<SignupErrors> profilePicError;
+
 
 
     public MutableLiveData<String> getUsername() {
@@ -73,5 +75,12 @@ public class SignupViewModel extends ViewModel {
             displayNameError = new MutableLiveData<SignupErrors>();
         }
         return displayNameError;
+    }
+
+    public MutableLiveData<SignupErrors> getProfilePicError() {
+        if (profilePicError == null) {
+            profilePicError = new MutableLiveData<SignupErrors>();
+        }
+        return profilePicError;
     }
 }

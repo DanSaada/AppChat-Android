@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,7 +22,6 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.appchat.OperationCallback;
@@ -56,9 +54,9 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
     private TextInputLayout displayNameTextInputLayout;
 
     private UserViewModel userViewModel;
+    private SignupViewModel signupViewModel;
     private boolean isSignupSuccessful;
 
-    private SignupViewModel signupViewModel;
 
 
     @SuppressLint("SetTextI18n")
@@ -75,7 +73,13 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
 
         initViewModelLogic();
 
-        initTextEventListeners();
+        onChangeUsername();
+
+        onChangePassword();
+
+        onChangeConfirmPassword();
+
+        onChangeDisplayName();
 
         initUploadPictureBtn();
 
@@ -142,8 +146,11 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
 
             profileImageView.setImageBitmap(rotatedBitmap);
             profileImageView.setVisibility(View.VISIBLE); // Set the visibility of profileImageView to visible
+            signupViewModel.getProfilePicError().setValue(SignupErrors.OK);
         } catch (IOException e) {
+            //TODO: check if this line is necessary, might not be needed
             e.printStackTrace();
+            signupViewModel.getProfilePicError().setValue(SignupErrors.INVALID_PROFILE_PIC);
         }
     }
 
@@ -177,7 +184,7 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
 
     }
 
-    private void initTextEventListeners() {
+    private void onChangeUsername() {
         usernameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -196,6 +203,63 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
         });
     }
 
+    private void onChangePassword() {
+        passwordEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                signupViewModel.getPassword().setValue(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // do nothing
+            }
+        });
+    }
+
+    private void onChangeConfirmPassword() {
+        confirmPasswordEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                signupViewModel.getConfirmPassword().setValue(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // do nothing
+            }
+        });
+    }
+
+    private void onChangeDisplayName() {
+        displayNameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                signupViewModel.getDisplayName().setValue(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // do nothing
+            }
+        });
+    }
+
     private void initUploadPictureBtn() {
 
         imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -204,6 +268,8 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
                 if (data != null) {
                     Uri imageUri = data.getData(); // retrieve the URI of the selected image
                     handleImageSelection(imageUri);
+                } else {
+                    signupViewModel.getProfilePicError().setValue(SignupErrors.INVALID_PROFILE_PIC);
                 }
             }
         });
@@ -216,23 +282,23 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
     }
 
     private void inputsValidation() {
+
         // Clear any existing error messages
         usernameTextInputLayout.setError(null);
         passwordTextInputLayout.setError(null);
         confirmPasswordTextInputLayout.setError(null);
         displayNameTextInputLayout.setError(null);
 
-
         // new implementation:
-
         SignupErrors usernameError = this.signupViewModel.getUsernameError().getValue();
         SignupErrors passwordError = this.signupViewModel.getPasswordError().getValue();
         SignupErrors confirmPasswordError = this.signupViewModel.getConfirmPasswordError().getValue();
         SignupErrors displayNameError = this.signupViewModel.getDisplayNameError().getValue();
+        SignupErrors profilePicError = this.signupViewModel.getProfilePicError().getValue();
 
         boolean isValidationSuccessful = (usernameError == SignupErrors.OK) &&
                 (passwordError == SignupErrors.OK) && (confirmPasswordError == SignupErrors.OK) &&
-                (displayNameError == SignupErrors.OK);
+                (displayNameError == SignupErrors.OK) && (profilePicError == SignupErrors.OK);
 
         if (isValidationSuccessful) {
             this.userViewModel.setCallback(this);
@@ -251,7 +317,7 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
             }
         }
         else {
-            // do something
+            Toast.makeText(this, "Please Fill All Fields Correctly", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -259,6 +325,8 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
         if (usernameError != SignupErrors.OK ) {
             usernameTextInputLayout.setError(getString(R.string.username_required_error));
             usernameTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+        } else {
+            usernameTextInputLayout.setError(null);
         }
     }
 
@@ -266,6 +334,8 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
         if (passwordError != SignupErrors.OK ) {
             passwordTextInputLayout.setError(getString(R.string.password_required_error));
             passwordTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+        } else {
+            passwordTextInputLayout.setError(null);
         }
     }
 
@@ -273,6 +343,8 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
         if (confirmPasswordError != SignupErrors.OK ) {
             confirmPasswordTextInputLayout.setError(getString(R.string.password_mismatch_error));
             confirmPasswordTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+        } else {
+            confirmPasswordTextInputLayout.setError(null);
         }
     }
 
@@ -280,6 +352,8 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
         if (displayNameError != SignupErrors.OK ) {
             displayNameTextInputLayout.setError(getString(R.string.display_name_required_error));
             displayNameTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+        } else {
+            displayNameTextInputLayout.setError(null);
         }
     }
 

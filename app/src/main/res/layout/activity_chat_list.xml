@@ -98,12 +98,21 @@
 
 
         <!-- Chat List -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/chatListRecyclerView"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/searchContainer"
-            android:background="@android:color/white" />
+            android:background="@android:color/white">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/chatListRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/searchContainer"
+                android:background="@android:color/white" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     </RelativeLayout>
 
