@@ -15,20 +15,28 @@ public class Contact {
     private String sentTime;
     private String userId; // the contact's real id in a prespective of a user in the db
 
+    private int unreadCount;
+
+    private int contactImage;
+
     public Contact() {
         this.id = null;
         this.name = null;
         this.lastMsg = null;
         this.sentTime = null;
         this.userId = null;
+        this.unreadCount = 0;
+        this.contactImage = 0;
     }
 
-    public Contact(String id, String name, String lastMsg, String sentTime, String userId) {
+    public Contact(String id, String name, String lastMsg, String sentTime, String userId, int unreadCount, int contactImage) {
         this.id = id;
         this.name = name;
         this.lastMsg = lastMsg;
         this.sentTime = sentTime;
         this.userId = userId;
+        this.unreadCount = unreadCount;
+        this.contactImage = contactImage;
     }
 
 
@@ -72,5 +80,19 @@ public class Contact {
         return this.userId;
     }
 
+    public int getUnreadCount() {
+        return this.unreadCount;
+    }
 
+    public int getContactImage() {
+        return this.contactImage;
+    }
+
+    public void setUnreadCount(int unreadCount) {
+        this.unreadCount = unreadCount;
+    }
+
+    public void setContactImage(int contactImage) {
+        this.contactImage = contactImage;
+    }
 }
