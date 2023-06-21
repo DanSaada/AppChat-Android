@@ -9,6 +9,9 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,12 +23,15 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.appchat.OperationCallback;
 import com.appchat.R;
 import com.appchat.activities.signupServices.SignupErrors;
 import com.appchat.activities.signupServices.ValidateInputsService;
 import com.appchat.entities.converters.Base64TypeConverter;
+import com.appchat.viewModels.SignupViewModel;
 import com.appchat.viewModels.UserViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -52,109 +58,73 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
     private UserViewModel userViewModel;
     private boolean isSignupSuccessful;
 
+    private SignupViewModel signupViewModel;
+
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-
-        isSignupSuccessful = false;
-        this.userViewModel = new UserViewModel();
         setContentView(R.layout.activity_signup);
-
         TextView signUpTextView = findViewById(R.id.signInTextView);
         signUpTextView.setOnClickListener(v -> finish());
 
-        profileImageView = findViewById(R.id.profileImageView);
-        uploadPictureBtn = findViewById(R.id.uploadPictureButton);
 
-        // Initialize EditText fields
-        usernameEditText = findViewById(R.id.usernameEditText);
-        passwordEditText = findViewById(R.id.passwordEditText);
-        confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
-        displayNameEditText = findViewById(R.id.displayNameEditText);
+        init();
 
-        // Initialize TextInputLayouts
-        usernameTextInputLayout = findViewById(R.id.usernameTextInputLayout);
-        passwordTextInputLayout = findViewById(R.id.passwordTextInputLayout);
-        confirmPasswordTextInputLayout = findViewById(R.id.confirmPasswordTextInputLayout);
-        displayNameTextInputLayout = findViewById(R.id.displayNameTextInputLayout);
+        initViewModelLogic();
 
-        imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == RESULT_OK) {
-                Intent data = result.getData();
-                if (data != null) {
-                    Uri imageUri = data.getData(); // retrieve the URI of the selected image
-                    handleImageSelection(imageUri);
-                }
+        initTextEventListeners();
+
+        initUploadPictureBtn();
+
+        initSettingsBtn();
+
+        initInputsValidation();
+    }
+
+    private void initViewModelLogic() {
+        signupViewModel = new ViewModelProvider(this).get(SignupViewModel.class);
+
+        // Observe the change in the input fields
+        signupViewModel.getUsername().observe(this, s -> {
+            if (s != null) {
+                SignupErrors usernameError = ValidateInputsService.validateUsername(s);
+                signupViewModel.getUsernameError().setValue(usernameError);
             }
         });
 
-        uploadPictureBtn.setOnClickListener(v -> {
-            uploadPictureBtn.setText("Change Picture");
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            imagePickerLauncher.launch(intent);
-        });
-
-        ImageButton settingsButton = findViewById(R.id.settingsButton);
-        settingsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(SignupActivity.this, SettingsActivity.class);
-            startActivity(intent);
-        });
-
-        Button registerBtn = findViewById(R.id.registerButton);
-        registerBtn.setOnClickListener(v -> {
-            boolean flag = true;
-            // Save the input from each field
-            String username = usernameEditText.getText().toString();
-            String password = passwordEditText.getText().toString();
-            String confirmPassword = confirmPasswordEditText.getText().toString();
-            String displayName = displayNameEditText.getText().toString();
-
-            // Clear any existing error messages
-            usernameTextInputLayout.setError(null);
-            passwordTextInputLayout.setError(null);
-            confirmPasswordTextInputLayout.setError(null);
-
-            // Perform validation and show error messages if necessary
-                SignupErrors usernameError = ValidateInputsService.validateUsername(username);
-                if (usernameError != SignupErrors.OK || username.isEmpty()) {
-                    usernameTextInputLayout.setError("Invalid username");
-                    usernameTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
-                    flag = false;
-                }
-                SignupErrors passwordError = ValidateInputsService.validatePassword(password);
-                if (passwordError != SignupErrors.OK || password.isEmpty()) {
-                    passwordTextInputLayout.setError(getString(R.string.password_required_error));
-                    passwordTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
-                    flag = false;
-            }
-                SignupErrors confirmPasswordError = ValidateInputsService.
-                        validateConfirmPassword(password, confirmPassword);
-                if (confirmPasswordError != SignupErrors.OK || confirmPassword.isEmpty()) {
-                    confirmPasswordTextInputLayout.setError(getString(R.string.password_mismatch_error));
-                    confirmPasswordTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
-                    flag = false;
-                }
-                SignupErrors displayNameError = ValidateInputsService.validateDisplayName(displayName);
-                if (displayNameError != SignupErrors.OK || displayName.isEmpty()) {
-                    displayNameTextInputLayout.setError(getString(R.string.display_name_required_error));
-                    displayNameTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
-                    flag = false;
-                }
-            if (flag) {
-                this.userViewModel.setCallback(this);
-                byte[] profileImage = Base64TypeConverter.fromBase64String(profileImageView.toString());
-                this.userViewModel.registerUser(username, password, displayName, profileImage);
-                if (isSignupSuccessful) {
-                    Toast.makeText(this, "Signup successful", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-                else {
-                    Toast.makeText(this, "Signup failed", Toast.LENGTH_SHORT).show();
-                }
+        signupViewModel.getPassword().observe(this, s -> {
+            if (s != null) {
+                SignupErrors passwordError = ValidateInputsService.validatePassword(s);
+                signupViewModel.getPasswordError().setValue(passwordError);
             }
         });
+
+        signupViewModel.getConfirmPassword().observe(this, s -> {
+            if (s != null) {
+                String password = signupViewModel.getPassword().getValue();
+                SignupErrors confirmPasswordError =
+                        ValidateInputsService.validateConfirmPassword(password, s);
+                signupViewModel.getConfirmPasswordError().setValue(confirmPasswordError);
+            }
+        });
+
+        signupViewModel.getDisplayName().observe(this, s -> {
+            if (s != null) {
+                SignupErrors displayNameError = ValidateInputsService.validateDisplayName(s);
+                signupViewModel.getDisplayNameError().setValue(displayNameError);
+            }
+        });
+
+        signupViewModel.getUsernameError().observe(this, this::checkUsernameError);
+
+        signupViewModel.getPasswordError().observe(this, this::checkPasswordError);
+
+        signupViewModel.getConfirmPasswordError().observe(this, this::checkConfirmPasswordError);
+
+        signupViewModel.getDisplayNameError().observe(this, this::checkDisplayNameError);
     }
 
     private void handleImageSelection(Uri imageUri) {
@@ -175,6 +145,149 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void initSettingsBtn() {
+        ImageButton settingsButton = findViewById(R.id.settingsButton);
+        settingsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(SignupActivity.this, SettingsActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    private void init() {
+
+        isSignupSuccessful = false;
+        this.userViewModel = new UserViewModel();
+
+        profileImageView = findViewById(R.id.profileImageView);
+        uploadPictureBtn = findViewById(R.id.uploadPictureButton);
+
+        // Initialize EditText fields
+        usernameEditText = findViewById(R.id.usernameEditText);
+        passwordEditText = findViewById(R.id.passwordEditText);
+        confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
+        displayNameEditText = findViewById(R.id.displayNameEditText);
+
+        // Initialize TextInputLayouts
+        usernameTextInputLayout = findViewById(R.id.usernameTextInputLayout);
+        passwordTextInputLayout = findViewById(R.id.passwordTextInputLayout);
+        confirmPasswordTextInputLayout = findViewById(R.id.confirmPasswordTextInputLayout);
+        displayNameTextInputLayout = findViewById(R.id.displayNameTextInputLayout);
+
+    }
+
+    private void initTextEventListeners() {
+        usernameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                signupViewModel.getUsername().setValue(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // do nothing
+            }
+        });
+    }
+
+    private void initUploadPictureBtn() {
+
+        imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK) {
+                Intent data = result.getData();
+                if (data != null) {
+                    Uri imageUri = data.getData(); // retrieve the URI of the selected image
+                    handleImageSelection(imageUri);
+                }
+            }
+        });
+
+        uploadPictureBtn.setOnClickListener(v -> {
+            uploadPictureBtn.setText("Change Picture");
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            imagePickerLauncher.launch(intent);
+        });
+    }
+
+    private void inputsValidation() {
+        // Clear any existing error messages
+        usernameTextInputLayout.setError(null);
+        passwordTextInputLayout.setError(null);
+        confirmPasswordTextInputLayout.setError(null);
+        displayNameTextInputLayout.setError(null);
+
+
+        // new implementation:
+
+        SignupErrors usernameError = this.signupViewModel.getUsernameError().getValue();
+        SignupErrors passwordError = this.signupViewModel.getPasswordError().getValue();
+        SignupErrors confirmPasswordError = this.signupViewModel.getConfirmPasswordError().getValue();
+        SignupErrors displayNameError = this.signupViewModel.getDisplayNameError().getValue();
+
+        boolean isValidationSuccessful = (usernameError == SignupErrors.OK) &&
+                (passwordError == SignupErrors.OK) && (confirmPasswordError == SignupErrors.OK) &&
+                (displayNameError == SignupErrors.OK);
+
+        if (isValidationSuccessful) {
+            this.userViewModel.setCallback(this);
+
+            String username = usernameEditText.getText().toString();
+            String password = passwordEditText.getText().toString();
+            String displayName = displayNameEditText.getText().toString();
+            byte[] profileImage = Base64TypeConverter.fromBase64String(profileImageView.toString());
+            this.userViewModel.registerUser(username, password, displayName, profileImage);
+            if (isSignupSuccessful) {
+                Toast.makeText(this, "Signup successful", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+            else {
+                Toast.makeText(this, "Signup failed", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else {
+            // do something
+        }
+    }
+
+    private void checkUsernameError(SignupErrors usernameError) {
+        if (usernameError != SignupErrors.OK ) {
+            usernameTextInputLayout.setError(getString(R.string.username_required_error));
+            usernameTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+        }
+    }
+
+    private void checkPasswordError(SignupErrors passwordError) {
+        if (passwordError != SignupErrors.OK ) {
+            passwordTextInputLayout.setError(getString(R.string.password_required_error));
+            passwordTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+        }
+    }
+
+    private void checkConfirmPasswordError(SignupErrors confirmPasswordError) {
+        if (confirmPasswordError != SignupErrors.OK ) {
+            confirmPasswordTextInputLayout.setError(getString(R.string.password_mismatch_error));
+            confirmPasswordTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+        }
+    }
+
+    private void checkDisplayNameError(SignupErrors displayNameError) {
+        if (displayNameError != SignupErrors.OK ) {
+            displayNameTextInputLayout.setError(getString(R.string.display_name_required_error));
+            displayNameTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+        }
+    }
+
+    private void initInputsValidation() {
+        Button registerBtn = findViewById(R.id.registerButton);
+        registerBtn.setOnClickListener(v -> {
+            inputsValidation();
+        });
     }
 
     @Override
