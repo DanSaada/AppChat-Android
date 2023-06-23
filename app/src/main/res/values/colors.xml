@@ -8,5 +8,7 @@
     <color name="sent_message_color">#8BB461</color>
     <color name="green">#6F6E70</color>
     <color name="cool_light_purple">#7265AE</color>
-
+    <color name="start_gradient_color">#c850c0</color>
+    <color name="end_gradient_color">#4158d0</color>
+    <color name="colorAccent">#FF4081</color>
 </resources>
