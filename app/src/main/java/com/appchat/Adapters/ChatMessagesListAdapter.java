@@ -3,73 +3,114 @@ package com.appchat.Adapters;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.appchat.R;
-import com.appchat.entities.Contact;
+import com.appchat.entities.Message;
 
 import java.util.List;
 
-public class ChatMessagesListAdapter extends RecyclerView.Adapter<ChatMessagesListAdapter.ChatMessagesListViewHolder> {
-    class ChatMessagesListViewHolder extends RecyclerView.ViewHolder {
-        private final TextView messageID;
-        private final TextView content;
-        private final TextView created;
-        private final TextView userID;
-        private final TextView chatID;
+public class ChatMessagesListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final int VIEW_TYPE_SENT = 1;
+    private static final int VIEW_TYPE_RECEIVED = 2;
 
-        private ChatMessagesListViewHolder(View itemView) {
-            super(itemView);
-            contactName = itemView.findViewById(R.id.h4);
-            lastMsg = itemView.findViewById(R.id.message);
-            sentTime = itemView.findViewById(R.id.time);
-            unreadCount = itemView.findViewById(R.id.unreadCount);
-            contactImage = itemView.findViewById(R.id.imgCover);
-        }
+    private List<Message> messages;
+    private Context context;
 
+    public ChatMessagesListAdapter(Context context) {
+        this.context = context;
     }
 
-    private final LayoutInflater mInflater;
-    private List<Contact> contacts; // Cached copy of contacts
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view;
 
-    public ContactListAdapter(Context context) {
-        mInflater = LayoutInflater.from(context);
+        if (viewType == VIEW_TYPE_SENT) {
+            // Inflate sent message layout
+            view = inflater.inflate(R.layout.chat_sent_message, parent, false);
+            return new SentMessageViewHolder(view);
+        } else if (viewType == VIEW_TYPE_RECEIVED) {
+            // Inflate received message layout
+            view = inflater.inflate(R.layout.chat_received_message, parent, false);
+            return new ReceivedMessageViewHolder(view);
+        }
+
+        // Return a default ViewHolder if the viewType is unknown
+        view = inflater.inflate(R.layout.chat_sent_message, parent, false);
+        return new SentMessageViewHolder(view);
     }
 
     @Override
-    public ContactListAdapter.ContactListViewHolder onCreateViewHolder(android.view.ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.chat_list_item, parent, false);
-        return new ContactListAdapter.ContactListViewHolder(itemView);
-    }
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Message message = messages.get(position);
 
-    @Override
-    public void onBindViewHolder(ContactListAdapter.ContactListViewHolder holder, int position) {
-        if (contacts != null) {
-            final Contact current = contacts.get(position);
-            holder.contactName.setText(current.getName());
-            holder.lastMsg.setText(current.getLastMsg());
-            holder.sentTime.setText(current.getSentTime());
-//            holder.unreadCount.setText(current.getUnreadCount());
-            holder.contactImage.setImageResource(current.getContactImage());
+        if (holder instanceof SentMessageViewHolder) {
+            SentMessageViewHolder sentHolder = (SentMessageViewHolder) holder;
+            // Bind sent message data to SentMessageViewHolder
+            sentHolder.sentMessageText.setText(message.getContent());
+            sentHolder.messageTime.setText(message.getCreated());
+        } else if (holder instanceof ReceivedMessageViewHolder) {
+            ReceivedMessageViewHolder receivedHolder = (ReceivedMessageViewHolder) holder;
+            // Bind received message data to ReceivedMessageViewHolder
+            receivedHolder.receivedMessageText.setText(message.getContent());
+            receivedHolder.messageTime.setText(message.getCreated());
         }
     }
 
-    public void setContacts(List<Contact> contacts){
-        this.contacts = contacts;
-        notifyDataSetChanged();
+    @Override
+    public int getItemViewType(int position) {
+        Message message = messages.get(position);
+
+        if (message.isSentByLoggedUser()) {
+            return VIEW_TYPE_SENT;
+        } else if (message.isReceivedByLoggedUser()) {
+            return VIEW_TYPE_RECEIVED;
+        }
+
+        // Default view type
+        return VIEW_TYPE_SENT;
     }
 
     @Override
     public int getItemCount() {
-        if (contacts != null)
-            return contacts.size();
-        else return 0;
+        if (messages == null) {
+            return 0;
+        }
+        return messages.size();
     }
 
-    public List<Contact> getContacts() {
-        return contacts;
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+        notifyDataSetChanged();
+    }
+
+    // ViewHolder for sent messages
+    private static class SentMessageViewHolder extends RecyclerView.ViewHolder {
+        TextView sentMessageText;
+        TextView messageTime;
+
+        SentMessageViewHolder(@NonNull View itemView) {
+            super(itemView);
+            sentMessageText = itemView.findViewById(R.id.sentMessageText);
+            messageTime = itemView.findViewById(R.id.messageTime1);
+        }
+    }
+
+    // ViewHolder for received messages
+    private static class ReceivedMessageViewHolder extends RecyclerView.ViewHolder {
+        TextView receivedMessageText;
+        TextView messageTime;
+
+        ReceivedMessageViewHolder(@NonNull View itemView) {
+            super(itemView);
+            receivedMessageText = itemView.findViewById(R.id.receivedMessageText);
+            messageTime = itemView.findViewById(R.id.messageTime1);
+        }
     }
 }

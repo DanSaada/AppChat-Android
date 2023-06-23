@@ -4,6 +4,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.appchat.AppStateManager;
+
 @Entity
 public class Message {
 
@@ -77,5 +79,13 @@ public class Message {
 
     public String getContactId() {
         return contactId;
+    }
+
+    public boolean isSentByLoggedUser() {
+        return userId.equals(AppStateManager.loggedUser);
+    }
+
+    public boolean isReceivedByLoggedUser() {
+        return contactId.equals(AppStateManager.loggedUser);
     }
 }
