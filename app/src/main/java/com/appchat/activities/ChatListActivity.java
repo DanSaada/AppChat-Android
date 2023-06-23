@@ -36,5 +36,6 @@ public class ChatListActivity extends AppCompatActivity {
         contacts.add(new Contact("8", "name7", "lastMsg", "sentTime", "8", 0, R.drawable.cat));
         contacts.add(new Contact("9", "name8", "lastMsg", "sentTime", "9", 0, R.drawable.cat));
         adapter.setContacts(contacts);
+
     }
 }
