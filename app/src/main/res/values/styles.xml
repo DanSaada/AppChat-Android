@@ -15,6 +15,10 @@
         <item name="android:background">@drawable/friend_message_background</item>
     </style>
 
+    <style name="UserMessageStyle" parent="Widget.MaterialComponents.CardView">
+        <item name="android:background">@drawable/user_message_background</item>
+    </style>
+
     <!-- Apply Material Components style to MyMessageStyle -->
     <style name="MyMessageStyle" parent="Widget.MaterialComponents.CardView">
         <item name="android:background">#E5E5EA</item>

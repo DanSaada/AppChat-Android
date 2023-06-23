@@ -13,16 +13,15 @@ import com.appchat.entities.Contact;
 
 import java.util.List;
 
+public class ChatMessagesListAdapter extends RecyclerView.Adapter<ChatMessagesListAdapter.ChatMessagesListViewHolder> {
+    class ChatMessagesListViewHolder extends RecyclerView.ViewHolder {
+        private final TextView messageID;
+        private final TextView content;
+        private final TextView created;
+        private final TextView userID;
+        private final TextView chatID;
 
-public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ContactListViewHolder> {
-    class ContactListViewHolder extends RecyclerView.ViewHolder {
-        private final TextView contactName;
-        private final TextView lastMsg;
-        private final TextView sentTime;
-        private final TextView unreadCount;
-        private final ImageView contactImage;
-
-        private ContactListViewHolder(View itemView) {
+        private ChatMessagesListViewHolder(View itemView) {
             super(itemView);
             contactName = itemView.findViewById(R.id.h4);
             lastMsg = itemView.findViewById(R.id.message);
@@ -41,13 +40,13 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     }
 
     @Override
-    public ContactListViewHolder onCreateViewHolder(android.view.ViewGroup parent, int viewType) {
+    public ContactListAdapter.ContactListViewHolder onCreateViewHolder(android.view.ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.chat_list_item, parent, false);
-        return new ContactListViewHolder(itemView);
+        return new ContactListAdapter.ContactListViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(ContactListViewHolder holder, int position) {
+    public void onBindViewHolder(ContactListAdapter.ContactListViewHolder holder, int position) {
         if (contacts != null) {
             final Contact current = contacts.get(position);
             holder.contactName.setText(current.getName());

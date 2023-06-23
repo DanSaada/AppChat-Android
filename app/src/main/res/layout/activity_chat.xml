@@ -88,57 +88,14 @@
             android:orientation="vertical">
 
             <!-- Chat Messages -->
-            <ScrollView
-                android:id="@+id/chatMessagesScrollView"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/chatRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/background_image">
+                android:background="@drawable/background_image" />
 
-                <LinearLayout
-                    android:id="@+id/chatMessages"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
 
-                    <!-- Chat Message (Example) -->
-                    <LinearLayout
-                        android:id="@+id/chatMessage1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="@dimen/_10sp"
-                        android:layout_marginRight="@dimen/_4dp"
-                        android:elevation="10dp"
-                        style="@style/FriendMessageStyle">
 
-                        <TextView
-                            android:id="@+id/messageText1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Hey Ofir, what are your plans for the weekend?"
-                            android:textSize="16sp"
-                            android:textAlignment="viewEnd"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp" />
-
-                        <TextView
-                            android:id="@+id/messageTime1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="07:43"
-                            android:textSize="12sp"
-                            android:textAlignment="viewEnd"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
-                            />
-                    </LinearLayout>
-
-                    <!-- Add more message views here -->
-
-                </LinearLayout>
-
-            </ScrollView>
 
         </LinearLayout>
 
