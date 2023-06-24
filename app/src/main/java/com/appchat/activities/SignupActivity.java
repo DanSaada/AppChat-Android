@@ -163,7 +163,7 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
 
     private void init() {
 
-        isSignupSuccessful = false;
+        isSignupSuccessful = true;
         this.userViewModel = new UserViewModel();
 
         profileImageView = findViewById(R.id.profileImageView);
@@ -310,12 +310,10 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
             if (isSignupSuccessful) {
                 Toast.makeText(this, "Signup successful", Toast.LENGTH_SHORT).show();
                 finish();
-            }
-            else {
+            } else {
                 Toast.makeText(this, "Signup failed", Toast.LENGTH_SHORT).show();
             }
-        }
-        else {
+        } else {
             Toast.makeText(this, "Please Fill All Fields Correctly", Toast.LENGTH_SHORT).show();
         }
     }
