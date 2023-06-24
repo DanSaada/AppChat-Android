@@ -3,6 +3,7 @@ package com.appchat.api;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.appchat.AppStateManager;
+import com.appchat.OperationCallback;
 import com.appchat.entities.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,12 +19,14 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @RunWith(AndroidJUnit4.class)
-public class UserApiTestAndroid {
+public class UserApiTestAndroid implements OperationCallback {
 
     private WebServiceApi webServiceApi;
+    private boolean isSuccessful;
 
     @Before
     public void setup() {
+        isSuccessful = false;
         Gson gson = new GsonBuilder().setLenient().create();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(AppStateManager.serverUrl + AppStateManager.serverPort + "/")
@@ -57,13 +60,28 @@ public class UserApiTestAndroid {
         }
     }
 
-    @Test
-    public void setCallback() {
-    }
 
     @Test
-    public void checkTokenForLogin() {
+    public void testCheckTokenForLogin() throws Exception {
+//        // Create a new User object with the necessary details
+//        User user = new User("maui12", "hello");
+//
+//        // Call the createToken method and get the response
+//        Response<JsonPrimitive> response = webServiceApi.createToken(user).execute();
+//
+//        Assert.assertEquals(200, response.code());
+//        // Check if the request was successful
+//        if (response.isSuccessful() && response.code() == 200 && response.body() != null) {
+//            // Extract the token from the response body
+//            String token = response.body().getAsString();
+//            System.out.println("!!!!!!!" + token);
+//        } else {
+//            System.out.println("false");
+//        }
+        UserApi userApi = new UserApi();
     }
+
+
 
     @Test
     public void addUser() {
@@ -71,5 +89,15 @@ public class UserApiTestAndroid {
 
     @Test
     public void getUser() {
+    }
+
+    @Override
+    public void onSuccess() {
+        isSuccessful = true;
+    }
+
+    @Override
+    public void onFail() {
+        isSuccessful = false;
     }
 }

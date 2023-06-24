@@ -1,6 +1,7 @@
 package com.appchat.api;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -53,6 +54,9 @@ public class UserApi {
                 if (response.isSuccessful() && response.code() == 200 && response.body() != null) {
                     // extract the logged in user's token
                     String token = response.body().toString();
+                    // Debug
+                    Log.d("UserApi.checkTokenForLogin(): ", token);
+                    // End debug
                     AppStateManager.loggerUserToken = token.substring(1, token.length() - 1);
                     callback.onSuccess();
                 } else {
