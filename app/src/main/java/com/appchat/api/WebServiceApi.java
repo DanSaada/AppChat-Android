@@ -3,8 +3,11 @@ package com.appchat.api;
 import com.appchat.entities.Contact;
 import com.appchat.entities.Message;
 import com.appchat.entities.User;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -23,7 +26,7 @@ public interface WebServiceApi {
     //USERS
 
     @POST("api/Users")
-    Call<JsonPrimitive> postUser(@Body User user);
+    Call<JsonObject> postUser(@Body User user);
 
     //TODO: For now only implemented as a local database (room) request in the UserApi
     @GET("api/Users/{username}")

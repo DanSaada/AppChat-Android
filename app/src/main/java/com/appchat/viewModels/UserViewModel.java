@@ -20,7 +20,7 @@ public class UserViewModel extends ViewModel {
         this.userRepository.setCallback(callback);
     }
 
-    public void registerUser(String username, String password, String displayName, byte[] picture) {
+    public void registerUser(String username, String password, String displayName, String picture) {
         userRepository.addUser(username, password, displayName, picture);
     }
 }

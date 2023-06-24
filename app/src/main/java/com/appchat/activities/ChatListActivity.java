@@ -45,6 +45,5 @@ public class ChatListActivity extends AppCompatActivity {
             Intent intent = new Intent(ChatListActivity.this, AddContactFragment.class);
             startActivity(intent);
         });
-
     }
 }

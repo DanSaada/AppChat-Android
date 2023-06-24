@@ -28,7 +28,6 @@ import com.appchat.OperationCallback;
 import com.appchat.R;
 import com.appchat.activities.signupServices.SignupErrors;
 import com.appchat.activities.signupServices.ValidateInputsService;
-import com.appchat.entities.converters.Base64TypeConverter;
 import com.appchat.viewModels.SignupViewModel;
 import com.appchat.viewModels.UserViewModel;
 import com.google.android.material.textfield.TextInputLayout;
@@ -306,8 +305,8 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
             String username = usernameEditText.getText().toString();
             String password = passwordEditText.getText().toString();
             String displayName = displayNameEditText.getText().toString();
-            byte[] profileImage = Base64TypeConverter.fromBase64String(profileImageView.toString());
-            this.userViewModel.registerUser(username, password, displayName, profileImage);
+//            byte[] profileImage = Base64TypeConverter.fromBase64String(profileImageView.toString());
+            this.userViewModel.registerUser(username, password, displayName, profileImageView.toString());
             if (isSignupSuccessful) {
                 Toast.makeText(this, "Signup successful", Toast.LENGTH_SHORT).show();
                 finish();

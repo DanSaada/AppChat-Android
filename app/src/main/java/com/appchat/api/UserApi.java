@@ -1,14 +1,18 @@
 package com.appchat.api;
 
 import android.os.AsyncTask;
+
 import androidx.annotation.NonNull;
+
 import com.appchat.AppStateManager;
 import com.appchat.OperationCallback;
 import com.appchat.db.dao.UserDao;
 import com.appchat.entities.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,15 +67,15 @@ public class UserApi {
         });
     }
 
-    public void addUser(String username, String password, String displayName, byte[] profilePic) {
+    public void addUser(String username, String password, String displayName, String profilePic) {
         // create the new User object
         User user = new User(username, password, displayName, profilePic);
-        Call<JsonPrimitive> call = webServiceApi.postUser(user);
+        Call<JsonObject> call = webServiceApi.postUser(user);
         // start the async network request and attache a callback to handle the response
-        call.enqueue(new Callback<JsonPrimitive>() {
+        call.enqueue(new Callback<JsonObject>() {
             // response is received from the server
             @Override
-            public void onResponse(@NonNull Call<JsonPrimitive> call, @NonNull Response<JsonPrimitive> response) {
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful() && response.code() == 200 && response.body() != null) {
                     // add new user to the room database
 
@@ -90,7 +94,7 @@ public class UserApi {
             }
             // failure in the network request.
             @Override
-            public void onFailure(@NonNull Call<JsonPrimitive> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
                 // debug
                 System.out.println("UserApi.addUser(): failed - from onFailure() " + t.getMessage());
                 // end debug
