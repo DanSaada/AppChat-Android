@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.appchat.AppStateManager;
 import com.appchat.OperationCallback;
 import com.appchat.R;
 import com.appchat.api.UserApi;
@@ -57,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements OperationCallbac
     public void onSuccess() {
         runOnUiThread(() -> {
             Intent intent = new Intent(LoginActivity.this, ChatListActivity.class);
+            AppStateManager.loggedUser = ((EditText) findViewById(R.id.usernameEditText)).getText().toString();
             startActivity(intent);
             Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
         });
