@@ -1,6 +1,9 @@
 package com.appchat.Adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -54,7 +57,14 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             holder.lastMsg.setText(current.getLastMsg());
             holder.sentTime.setText(current.getSentTime());
 //            holder.unreadCount.setText(current.getUnreadCount());
-            holder.contactImage.setImageResource(current.getContactImage());
+            String base64Image = current.getContactImage();
+            Bitmap bitmap = convertBase64ToBitmap(base64Image);
+//            holder.contactImage.setImageResource(current.getContactImage());
+            if (bitmap != null) {
+                holder.contactImage.setImageBitmap(bitmap);
+            } else {
+                holder.contactImage.setImageResource(R.drawable.cat); // Set a default image if conversion fails
+            }
         }
     }
 
@@ -73,4 +83,15 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     public List<Contact> getContacts() {
         return contacts;
     }
+
+    private Bitmap convertBase64ToBitmap(String base64String) {
+        if (base64String == null) {
+            return null;
+        }
+
+        byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+    }
+
+
 }

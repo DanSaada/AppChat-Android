@@ -17,7 +17,7 @@ public class Contact {
 
     private int unreadCount;
 
-    private int contactImage;
+    private String contactImage;
 
     public Contact() {
         this.id = null;
@@ -26,10 +26,10 @@ public class Contact {
         this.sentTime = null;
         this.userId = null;
         this.unreadCount = 0;
-        this.contactImage = 0;
+        this.contactImage = null;
     }
 
-    public Contact(String id, String name, String lastMsg, String sentTime, String userId, int unreadCount, int contactImage) {
+    public Contact(String id, String name, String lastMsg, String sentTime, String userId, int unreadCount, String contactImage) {
         this.id = id;
         this.name = name;
         this.lastMsg = lastMsg;
@@ -84,7 +84,7 @@ public class Contact {
         return this.unreadCount;
     }
 
-    public int getContactImage() {
+    public String getContactImage() {
         return this.contactImage;
     }
 
@@ -92,7 +92,7 @@ public class Contact {
         this.unreadCount = unreadCount;
     }
 
-    public void setContactImage(int contactImage) {
+    public void setContactImage(String contactImage) {
         this.contactImage = contactImage;
     }
 }

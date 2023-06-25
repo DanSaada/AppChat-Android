@@ -16,7 +16,6 @@ import com.appchat.R;
 import com.appchat.api.UserApi;
 
 public class LoginActivity extends AppCompatActivity implements OperationCallback {
-    private boolean isSigninSuccessful;
     private UserApi userApi;
 
     @Override
@@ -24,7 +23,6 @@ public class LoginActivity extends AppCompatActivity implements OperationCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         this.userApi = new UserApi();
-        isSigninSuccessful = false;
 
         initUI();
     }

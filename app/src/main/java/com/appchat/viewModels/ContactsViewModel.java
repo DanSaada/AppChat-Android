@@ -26,7 +26,7 @@ public class ContactsViewModel extends ViewModel {
         contactRepository.setCallback(callback);
     }
 
-    public void add(Contact contact) {
+    public void add(String contact) {
         contactRepository.add(contact);
     }
 

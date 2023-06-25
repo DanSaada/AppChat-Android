@@ -8,6 +8,7 @@ import com.google.gson.JsonPrimitive;
 
 import java.util.List;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -38,7 +39,7 @@ public interface WebServiceApi {
     Call<List<Contact>> getAllContacts(@Header("authorization") String auth);
 
     @POST("api/Chats")
-    Call<Void> postContact(@Body String contactName , @Header("authorization") String auth);
+    Call<JsonObject> postContact(@Body RequestBody contactName , @Header("authorization") String auth);
 
     @GET("api/Chats/{id}")
     Call<Contact> getContact(@Path("id") String id, @Header("authorization") String auth);

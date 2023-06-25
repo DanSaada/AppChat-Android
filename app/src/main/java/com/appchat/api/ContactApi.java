@@ -2,13 +2,21 @@ package com.appchat.api;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+
 import com.appchat.AppStateManager;
 import com.appchat.OperationCallback;
 import com.appchat.db.dao.ContactDao;
 import com.appchat.entities.Contact;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
+
 import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,33 +71,56 @@ public class ContactApi {
         });
     }
 
-    public void addContact(MutableLiveData<List<Contact>> contacts, Contact newContact, String token) {
-        Call<Void> call = webServiceApi.postContact(newContact.getName(), token);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                new Thread(() -> {
-                    if (response.isSuccessful()) {
-                        // Insert the new contact into the local database
-                        contactDao.insert(newContact);
+    public void addContact(MutableLiveData<List<Contact>> contacts, String newContactName, String token) {
+        try {
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("username", newContactName);
 
-                        // Update the MutableLiveData with the updated list of contacts
-                        contacts.postValue(contactDao.getAllContacts());
-                        callback.onSuccess();
-                    } else if(callback != null) {
+            RequestBody body = RequestBody.create(MediaType.parse("application/json"), requestBody.toString());
+            Call<JsonObject> call = webServiceApi.postContact(body, token);
+            call.enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                    new Thread(() -> {
+
+                        if (response.isSuccessful()) {
+                            JsonObject responseBody = response.body();
+                            if (responseBody == null) {
+                                callback.onFail();
+                                return;
+                            }
+
+                            // Create a new contact object with the id and name of the new contact
+                            String id = responseBody.getAsJsonPrimitive("id").getAsString();
+                            JsonObject userObject = responseBody.getAsJsonObject("user");
+                            String username = userObject.getAsJsonPrimitive("username").getAsString();
+                            String displayName = userObject.getAsJsonPrimitive("displayName").getAsString();
+                            String profilePic = userObject.getAsJsonPrimitive("profilePic").getAsString();
+                            Contact newContact = new Contact(id, displayName, null,
+                                    null, username, 0, profilePic);
+                            contactDao.insert(newContact);
+
+                            // Update the MutableLiveData with the updated list of contacts
+                            contacts.postValue(contactDao.getAllContacts());
+                            callback.onSuccess();
+                        } else if(callback != null) {
+                            callback.onFail();
+                        }
+                    }).start();
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                    // Handle failure case, if needed
+                    if(callback != null) {
                         callback.onFail();
                     }
-                }).start();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                // Handle failure case, if needed
-                if(callback != null) {
-                    callback.onFail();
                 }
-            }
-        });
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            callback.onFail();
+        }
     }
 
     public void getContact(MutableLiveData<Contact> contactLiveData, String id, String token) {

@@ -59,7 +59,7 @@ public class ContactRepository {
         return contactListData;
     }
 
-    public void add(Contact contact) {
+    public void add(String contact) {
         this.contactApi.addContact(this.contactListData, contact, this.token);
     }
 
