@@ -1,5 +1,6 @@
 package com.appchat.api;
 
+import com.appchat.FirebaseUserToken;
 import com.appchat.entities.Contact;
 import com.appchat.entities.Message;
 import com.appchat.entities.User;
@@ -21,7 +22,7 @@ public interface WebServiceApi {
     //TOKENS
 
     @POST("api/Tokens")
-    Call<JsonPrimitive> createToken(@Body User user);
+    Call<JsonObject> createToken(@Body User user, @Header("androidToken") String androidToken);
 
     //USERS
 

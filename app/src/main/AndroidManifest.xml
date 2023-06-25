@@ -25,8 +25,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppChat"
-        tools:targetApi="31"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <service
+            android:name=".FirebaseService"
+            android:enabled="true"
+            android:exported="true"></service>
 
         <activity
             android:name=".activities.SettingsActivity"
