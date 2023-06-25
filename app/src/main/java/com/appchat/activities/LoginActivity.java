@@ -43,13 +43,6 @@ public class LoginActivity extends AppCompatActivity implements OperationCallbac
             this.userApi.setCallback(this);
             this.userApi.checkTokenForLogin(usernameEditText.getText().toString(),
                     passwordEditText.getText().toString());
-            if (this.isSigninSuccessful) {
-                Intent intent = new Intent(LoginActivity.this, ChatListActivity.class);
-                startActivity(intent);
-            } else {
-                Toast.makeText(LoginActivity.this, "Wrong username or password!",
-                        Toast.LENGTH_SHORT).show();
-            }
         });
 
         ImageButton settingsButton = findViewById(R.id.settingsButton);
@@ -62,11 +55,17 @@ public class LoginActivity extends AppCompatActivity implements OperationCallbac
 
     @Override
     public void onSuccess() {
-        this.isSigninSuccessful = true;
+        runOnUiThread(() -> {
+            Intent intent = new Intent(LoginActivity.this, ChatListActivity.class);
+            startActivity(intent);
+            Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override
     public void onFail() {
-        this.isSigninSuccessful = false;
+        runOnUiThread(() -> {
+            Toast.makeText(LoginActivity.this, "Wrong username or password!", Toast.LENGTH_SHORT).show();
+        });
     }
 }

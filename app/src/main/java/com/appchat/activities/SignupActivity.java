@@ -163,7 +163,7 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
 
     private void init() {
 
-        isSignupSuccessful = true;
+        isSignupSuccessful = false;
         this.userViewModel = new UserViewModel();
 
         profileImageView = findViewById(R.id.profileImageView);
@@ -307,12 +307,12 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
             String displayName = displayNameEditText.getText().toString();
 //            byte[] profileImage = Base64TypeConverter.fromBase64String(profileImageView.toString());
             this.userViewModel.registerUser(username, password, displayName, profileImageView.toString());
-            if (isSignupSuccessful) {
-                Toast.makeText(this, "Signup successful", Toast.LENGTH_SHORT).show();
-                finish();
-            } else {
-                Toast.makeText(this, "Signup failed", Toast.LENGTH_SHORT).show();
-            }
+//            if (isSignupSuccessful) {
+//                Toast.makeText(this, "Signup successful", Toast.LENGTH_SHORT).show();
+//                finish();
+//            } else {
+//                Toast.makeText(this, "Signup failed", Toast.LENGTH_SHORT).show();
+//            }
         } else {
             Toast.makeText(this, "Please Fill All Fields Correctly", Toast.LENGTH_SHORT).show();
         }
@@ -363,11 +363,12 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
 
     @Override
     public void onSuccess() {
-        this.isSignupSuccessful = true;
+        Toast.makeText(this, "Signup successful", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override
     public void onFail() {
-        this.isSignupSuccessful = false;
+        Toast.makeText(this, "Signup failed", Toast.LENGTH_SHORT).show();
     }
 }
