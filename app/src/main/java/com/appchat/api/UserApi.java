@@ -86,8 +86,12 @@ public class UserApi {
                     // debug
                     System.out.println("UserApi.addUser(): " + response.body().toString());
                     // end debug
-                    userDao.insert(user);
-                    callback.onSuccess();
+                    if (userDao.get(username) == null) {
+                        userDao.insert(user);
+                        callback.onSuccess();
+                    } else {
+                        callback.onFail();
+                    }
                 } else {
 
                     // debug
