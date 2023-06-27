@@ -10,33 +10,33 @@ public class Contact {
     @PrimaryKey(autoGenerate = false)
     @NonNull
     private String id;
-    private String name;
-    private String lastMsg;
-    private String sentTime;
-    private String userId; // the contact's real id in a prespective of a user in the db
+    private String displayName;
+    private String content;
+    private String created;
+    private String username; // the contact's real id in a prespective of a user in the db
 
-    private int unreadCount;
+    private int unreadCount; // might be always 0 because we don't have a way to know if the user read the message or not and because its not in the server api
 
-    private String contactImage;
+    private String profilePic;
 
     public Contact() {
         this.id = null;
-        this.name = null;
-        this.lastMsg = null;
-        this.sentTime = null;
-        this.userId = null;
+        this.displayName = null;
+        this.content = null;
+        this.created = null;
+        this.username = null;
         this.unreadCount = 0;
-        this.contactImage = null;
+        this.profilePic = null;
     }
 
-    public Contact(String id, String name, String lastMsg, String sentTime, String userId, int unreadCount, String contactImage) {
+    public Contact(String id, String displayName, String content, String created, String username, int unreadCount, String profilePic) {
         this.id = id;
-        this.name = name;
-        this.lastMsg = lastMsg;
-        this.sentTime = sentTime;
-        this.userId = userId;
+        this.displayName = displayName;
+        this.content = content;
+        this.created = created;
+        this.username = username;
         this.unreadCount = unreadCount;
-        this.contactImage = contactImage;
+        this.profilePic = profilePic;
     }
 
 
@@ -45,20 +45,20 @@ public class Contact {
         this.id = contactId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
-    public void setLastMsg(String lastMsg) {
-        this.lastMsg = lastMsg;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public void setSentTime(String sentTime) {
-        this.sentTime = sentTime;
+    public void setCreated(String created) {
+        this.created = created;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     //GETTERS
@@ -66,33 +66,33 @@ public class Contact {
         return this.id;
     }
 
-    public String getName() { return this.name;}
+    public String getDisplayName() { return this.displayName;}
 
-    public String getLastMsg() {
-        return this.lastMsg;
+    public String getContent() {
+        return this.content;
     }
 
-    public String getSentTime() {
-        return this.sentTime;
+    public String getCreated() {
+        return this.created;
     }
 
-    public String getUserId() {
-        return this.userId;
+    public String getUsername() {
+        return this.username;
     }
 
     public int getUnreadCount() {
         return this.unreadCount;
     }
 
-    public String getContactImage() {
-        return this.contactImage;
+    public String getProfilePic() {
+        return this.profilePic;
     }
 
     public void setUnreadCount(int unreadCount) {
         this.unreadCount = unreadCount;
     }
 
-    public void setContactImage(String contactImage) {
-        this.contactImage = contactImage;
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
     }
 }

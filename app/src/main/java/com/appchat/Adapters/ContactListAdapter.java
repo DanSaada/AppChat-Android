@@ -53,11 +53,11 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     public void onBindViewHolder(ContactListViewHolder holder, int position) {
         if (contacts != null) {
             final Contact current = contacts.get(position);
-            holder.contactName.setText(current.getName());
-            holder.lastMsg.setText(current.getLastMsg());
-            holder.sentTime.setText(current.getSentTime());
+            holder.contactName.setText(current.getDisplayName());
+            holder.lastMsg.setText(current.getContent());
+            holder.sentTime.setText(current.getCreated());
 //            holder.unreadCount.setText(current.getUnreadCount());
-            String base64Image = current.getContactImage();
+            String base64Image = current.getProfilePic();
             Bitmap bitmap = convertBase64ToBitmap(base64Image);
 //            holder.contactImage.setImageResource(current.getContactImage());
             if (bitmap != null) {

@@ -36,7 +36,7 @@ public interface WebServiceApi {
     //CHATS
 
     @GET("api/Chats")
-    Call<List<Contact>> getAllContacts(@Header("authorization") String auth);
+    Call<List<JsonObject>> getAllContacts(@Header("authorization") String auth);
 
     @POST("api/Chats")
     Call<JsonObject> postContact(@Body RequestBody contactName , @Header("authorization") String auth);
