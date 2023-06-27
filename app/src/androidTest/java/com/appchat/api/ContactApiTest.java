@@ -1,10 +1,10 @@
 package com.appchat.api;
 
+import com.appchat.Adapters.Json2EntityAdapter;
 import com.appchat.entities.Contact;
 import com.appchat.entities.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
@@ -90,12 +90,8 @@ public class ContactApiTest {
             Response<List<JsonObject>> response = webServiceApi.getAllContacts(loggerUserTokenTest).execute();
             Assert.assertEquals(200, response.code());
             Assert.assertNotNull(response.body());
-            for (JsonObject contact : response.body()) {
-                System.out.println(contact);
-                Contact contactObj = JsonToContact(contact);
-                System.out.println(contactObj);
-            }
-
+            List<Contact> contacts = Json2EntityAdapter.Json2ContactList(response.body());
+            System.out.println("contacts: " + contacts);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -103,22 +99,5 @@ public class ContactApiTest {
 
     }
 
-    private Contact JsonToContact(JsonObject jsonContact) {
-        String id = jsonContact.getAsJsonPrimitive("id").getAsString();
-        JsonObject userObject = jsonContact.getAsJsonObject("user");
-        String displayName = userObject.getAsJsonPrimitive("displayName").getAsString();
-        String username = userObject.getAsJsonPrimitive("username").getAsString();
-        String profilePic = userObject.getAsJsonPrimitive("profilePic").getAsString();
-        JsonElement lastMessageElement = jsonContact.get("lastMessage");
-        Contact contact;
-        if (lastMessageElement == null || lastMessageElement.isJsonNull()) {
-            contact = new Contact(id, displayName, null, null, username, 0, profilePic);
-        } else {
-            JsonObject lastMessageObject = lastMessageElement.getAsJsonObject();
-            String created = lastMessageObject.getAsJsonPrimitive("created").getAsString();
-            String content = lastMessageObject.getAsJsonPrimitive("content").getAsString();
-            contact = new Contact(id, displayName, content, created, username, 0, profilePic);
-        }
-        return contact;
-    }
+
 }

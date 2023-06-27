@@ -3,6 +3,7 @@ package com.appchat.api;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.appchat.Adapters.Json2EntityAdapter;
 import com.appchat.AppStateManager;
 import com.appchat.OperationCallback;
 import com.appchat.db.dao.ContactDao;
@@ -58,23 +59,29 @@ public class ContactApi {
                         return;
                     }
 
-                    // add the all contacts to the local database
-                    for (JsonObject jsonContact : response.body()) {
+//                    // add the all contacts to the local database
+//                    for (JsonObject jsonContact : response.body()) {
+//
+//                        String id = jsonContact.getAsJsonPrimitive("id").getAsString();
+//                        JsonObject userObject = jsonContact.getAsJsonObject("user");
+//                        String displayName = userObject.getAsJsonPrimitive("displayName").getAsString();
+//                        String username = userObject.getAsJsonPrimitive("username").getAsString();
+//                        String profilePic = userObject.getAsJsonPrimitive("profilePic").getAsString();
+//                        JsonObject lastMessageObject = jsonContact.getAsJsonObject("lastMessage");
+//                        Contact contact;
+//                        if (lastMessageObject == null) {
+//                            contact = new Contact(id, displayName, null, null, username, 0, profilePic);
+//                        } else {
+//                            String created = lastMessageObject.getAsJsonPrimitive("created").getAsString();
+//                            String content = lastMessageObject.getAsJsonPrimitive("content").getAsString();
+//                            contact = new Contact(id, displayName, content, created, username, 0, profilePic);
+//                        }
+//                        contactDao.insert(contact);
+//                    }
 
-                        String id = jsonContact.getAsJsonPrimitive("id").getAsString();
-                        JsonObject userObject = jsonContact.getAsJsonObject("user");
-                        String displayName = userObject.getAsJsonPrimitive("displayName").getAsString();
-                        String username = userObject.getAsJsonPrimitive("username").getAsString();
-                        String profilePic = userObject.getAsJsonPrimitive("profilePic").getAsString();
-                        JsonObject lastMessageObject = jsonContact.getAsJsonObject("lastMessage");
-                        Contact contact;
-                        if (lastMessageObject == null) {
-                            contact = new Contact(id, displayName, null, null, username, 0, profilePic);
-                        } else {
-                            String created = lastMessageObject.getAsJsonPrimitive("created").getAsString();
-                            String content = lastMessageObject.getAsJsonPrimitive("content").getAsString();
-                            contact = new Contact(id, displayName, content, created, username, 0, profilePic);
-                        }
+                    // new implementation:
+                    List<Contact> contactList = Json2EntityAdapter.Json2ContactList(response.body());
+                    for (Contact contact : contactList) {
                         contactDao.insert(contact);
                     }
                     contacts.postValue(contactDao.getAllContacts());
@@ -107,13 +114,16 @@ public class ContactApi {
                             }
 
                             // Create a new contact object with the id and name of the new contact
-                            String id = responseBody.getAsJsonPrimitive("id").getAsString();
-                            JsonObject userObject = responseBody.getAsJsonObject("user");
-                            String username = userObject.getAsJsonPrimitive("username").getAsString();
-                            String displayName = userObject.getAsJsonPrimitive("displayName").getAsString();
-                            String profilePic = userObject.getAsJsonPrimitive("profilePic").getAsString();
-                            Contact newContact = new Contact(id, displayName, null,
-                                    null, username, 0, profilePic);
+//                            String id = responseBody.getAsJsonPrimitive("id").getAsString();
+//                            JsonObject userObject = responseBody.getAsJsonObject("user");
+//                            String username = userObject.getAsJsonPrimitive("username").getAsString();
+//                            String displayName = userObject.getAsJsonPrimitive("displayName").getAsString();
+//                            String profilePic = userObject.getAsJsonPrimitive("profilePic").getAsString();
+//                            Contact newContact = new Contact(id, displayName, null,
+//                                    null, username, 0, profilePic);
+
+                            // new implementation:
+                            Contact newContact = Json2EntityAdapter.JsonToContact(responseBody);
                             contactDao.insert(newContact);
 
                             // Update the MutableLiveData with the updated list of contacts
