@@ -19,13 +19,16 @@ public class MessageRepository {
     private MessageListData messagesListData;
     private  String token;
 
-    public MessageRepository() {
+    private String chatID;
+
+    public MessageRepository(String chatID) {
         AppDB appDB = Room.databaseBuilder(AppStateManager.context, AppDB.class, AppStateManager.loggedUser)
                 .allowMainThreadQueries().fallbackToDestructiveMigration().build();
         this.messageDao = appDB.messageDao();
         this.contactDao = appDB.contactDao();
         this.messageApi = new MessageApi(this.messageDao);
-        this.messagesListData = new MessageListData();
+        this.chatID = chatID;
+        this.messagesListData = new MessageListData(chatID);
         this.token = "Bearer " + AppStateManager.loggerUserToken;
     }
 
@@ -34,9 +37,11 @@ public class MessageRepository {
     from the server when there are active observers.
 * */
     class MessageListData extends MutableLiveData<List<Message>> {
-        public MessageListData() {
+        private String chatID;
+        public MessageListData(String chatID) {
             super();
             // initialize chat's messages from local database
+            this.chatID = chatID;
             setValue(messageDao.getChatMessages(AppStateManager.loggedUser, AppStateManager.contactId));
         }
 
@@ -44,18 +49,18 @@ public class MessageRepository {
         protected void onActive() {
             super.onActive();
             // load messages from server API
-            setMessagesOfLocalDatabaseWithServerApiMessages();
+            setMessagesOfLocalDatabaseWithServerApiMessages(chatID);
         }
     }
 
-    public void setMessagesOfLocalDatabaseWithServerApiMessages() {
-        this.messageApi.getAllMessages(this.messagesListData, this.token , AppStateManager.contactId);
+    public void setMessagesOfLocalDatabaseWithServerApiMessages(String chatID) {
+        this.messageApi.getAllMessages(this.messagesListData, this.token , chatID);
     }
 
-    protected void setMessagesListDataWithDbMessages() {
+    protected void setMessagesListDataWithDbMessages(String chatID) {
         new Thread(() -> {
             messagesListData.postValue(messageDao
-                    .getChatMessages(AppStateManager.loggedUser, AppStateManager.contactId));
+                    .getChatMessages(AppStateManager.loggedUser, chatID));
         }).start();
     }
 
@@ -63,11 +68,11 @@ public class MessageRepository {
         return messagesListData;
     }
 
-    public void add(String message) {
-        messageApi.addMessage(this.messagesListData, this.token, AppStateManager.contactId, message);
+    public void add(String chatID, String content) {
+        messageApi.addMessage(this.messagesListData, this.token, chatID, content);
     }
 
-    public void reload() {
+    public void reload() { //TODO: check if needed
         new GetMessagesTask(messagesListData, messageDao).execute();
     }
 

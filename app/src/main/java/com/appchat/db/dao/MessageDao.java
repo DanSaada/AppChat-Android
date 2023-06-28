@@ -15,10 +15,10 @@ public interface MessageDao {
     @Query("SELECT * FROM message")
     List<Message> index();
 
-    @Query("SELECT * FROM message WHERE msgId = :id")
+    @Query("SELECT * FROM message WHERE messageID = :id")
     Message get(int id);
 
-    @Query("SELECT * FROM message WHERE userId = :userId AND contactId = :contactId")
+    @Query("SELECT * FROM message WHERE (sender = :userId AND receiver = :contactId) OR (sender = :contactId AND receiver = :userId)")
     List<Message> getChatMessages(String userId, String contactId);
 
     @Insert

@@ -114,15 +114,6 @@ public class ContactApi {
                             }
 
                             // Create a new contact object with the id and name of the new contact
-//                            String id = responseBody.getAsJsonPrimitive("id").getAsString();
-//                            JsonObject userObject = responseBody.getAsJsonObject("user");
-//                            String username = userObject.getAsJsonPrimitive("username").getAsString();
-//                            String displayName = userObject.getAsJsonPrimitive("displayName").getAsString();
-//                            String profilePic = userObject.getAsJsonPrimitive("profilePic").getAsString();
-//                            Contact newContact = new Contact(id, displayName, null,
-//                                    null, username, 0, profilePic);
-
-                            // new implementation:
                             Contact newContact = Json2EntityAdapter.JsonToContact(responseBody);
                             contactDao.insert(newContact);
 

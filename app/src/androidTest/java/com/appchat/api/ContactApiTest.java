@@ -1,7 +1,9 @@
 package com.appchat.api;
 
 import com.appchat.Adapters.Json2EntityAdapter;
+import com.appchat.AppStateManager;
 import com.appchat.entities.Contact;
+import com.appchat.entities.Message;
 import com.appchat.entities.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -64,6 +66,8 @@ public class ContactApiTest {
             Assert.assertNotNull(call.body());
             String token = call.body().toString();
             String loggerUserTokenTest = "Bearer " + token.substring(1, token.length() - 1);
+            AppStateManager.loggedUser = user.getUsername();
+            AppStateManager.contactId = user2.getUsername();
 
             // simulating adding a contact-chat:
             // sender - maui12, receiver - zazi34
@@ -93,11 +97,53 @@ public class ContactApiTest {
             List<Contact> contacts = Json2EntityAdapter.Json2ContactList(response.body());
             System.out.println("contacts: " + contacts);
 
+
+            // continue test for send message to this contact
+            for (int i = 0; i < contacts.size(); i++) {
+                if (contacts.get(i).getUsername().equals(newContact.getUsername())) {
+                    // send 5 messages to this contact
+                    for (int j = 0; j < 5; j++) {
+                        testSendMessage(contacts.get(i).getId(), "message test #" + j, loggerUserTokenTest);
+                    }
+                }
+            }
+
+            // now test hte getMessages
+            testGetMessages(newContact.getId(), loggerUserTokenTest);
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
+    private void testSendMessage(String chatID, String message, String token) {
+        try {
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("msg", message);
+            RequestBody body = RequestBody.create(MediaType.parse("application/json"),
+                    requestBody.toString());
+            Response<JsonObject> call = webServiceApi.postMessage(chatID, body,
+                    token).execute();
+            Assert.assertEquals(200, call.code());
+            Assert.assertNotNull(call.body());
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void testGetMessages(String chatID, String token) {
+        try {
+            Response<List<JsonObject>> call = webServiceApi.getMessages(chatID, token).execute();
+            Assert.assertEquals(200, call.code());
+            Assert.assertNotNull(call.body());
+            List<Message> messages = Json2EntityAdapter.Json2MessageList(call.body());
+            System.out.println("messages: " + messages);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

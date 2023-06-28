@@ -1,7 +1,6 @@
 package com.appchat.api;
 
 import com.appchat.entities.Contact;
-import com.appchat.entities.Message;
 import com.appchat.entities.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -39,7 +38,8 @@ public interface WebServiceApi {
     Call<List<JsonObject>> getAllContacts(@Header("authorization") String auth);
 
     @POST("api/Chats")
-    Call<JsonObject> postContact(@Body RequestBody contactName , @Header("authorization") String auth);
+    Call<JsonObject> postContact(@Body RequestBody contactName ,
+                                 @Header("authorization") String auth);
 
     @GET("api/Chats/{id}")
     Call<Contact> getContact(@Path("id") String id, @Header("authorization") String auth);
@@ -48,9 +48,10 @@ public interface WebServiceApi {
     Call<Void> deleteContact(@Path("id") String id, @Header("authorization") String auth);
 
     @GET("api/Chats/{id}/Messages")
-    Call<List<Message>> getMessages(@Path("id") String id, @Header("authorization") String auth);
+    Call<List<JsonObject>> getMessages(@Path("id") String id, @Header("authorization") String auth);
 
     @POST("api/Chats/{id}/Messages")
-    Call<Void> postMessage(@Path("id") String id, @Body String message, @Header("authorization") String auth);
+    Call<JsonObject> postMessage(@Path("id") String id, @Body RequestBody message,
+                                 @Header("authorization") String auth);
 
 }

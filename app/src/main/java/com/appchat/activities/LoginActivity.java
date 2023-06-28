@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity implements OperationCallbac
     public void onSuccess() {
         runOnUiThread(() -> {
             Intent intent = new Intent(LoginActivity.this, ChatListActivity.class);
+            //TODO: check that this doesnt cause problems - might be changed (edge case)
             AppStateManager.loggedUser = ((EditText) findViewById(R.id.usernameEditText)).getText().toString();
             startActivity(intent);
             Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();

@@ -1,6 +1,8 @@
 package com.appchat.Adapters;
 
+
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -11,8 +13,10 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.appchat.AppStateManager;
 import com.appchat.R;
 import com.appchat.entities.Contact;
+import com.appchat.entities.converters.Base64TypeConverter;
 
 import java.util.List;
 
@@ -56,14 +60,29 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             holder.contactName.setText(current.getDisplayName());
             holder.lastMsg.setText(current.getContent());
             holder.sentTime.setText(current.getCreated());
-//            holder.unreadCount.setText(current.getUnreadCount());
+//            holder.unreadCount.setText(current.getUnreadCount()); TODO: implement unread count
             String base64Image = current.getProfilePic();
-            Bitmap bitmap = convertBase64ToBitmap(base64Image);
-//            holder.contactImage.setImageResource(current.getContactImage());
+            Bitmap bitmap = Base64TypeConverter.convertBase64ToBitmap(base64Image);
+
+
+            // Set the click listener for the item
+            holder.itemView.setOnClickListener(view -> {
+
+                // pass relevant data to the ChatActivity
+                Context context = view.getContext();
+                Intent intent = new Intent(context, com.appchat.activities.ChatActivity.class);
+                intent.putExtra("chatID", current.getId());
+                intent.putExtra("displayName", current.getDisplayName());
+                intent.putExtra("profilePic", current.getProfilePic());
+                // set the current contactId with whom the user is chatting
+                AppStateManager.contactId = current.getUsername();
+                context.startActivity(intent);
+            });
             if (bitmap != null) {
                 holder.contactImage.setImageBitmap(bitmap);
             } else {
-                holder.contactImage.setImageResource(R.drawable.cat); // Set a default image if conversion fails
+                // Set a default image if conversion fails
+                holder.contactImage.setImageResource(R.drawable.cat);
             }
         }
     }
