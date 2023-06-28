@@ -2,13 +2,22 @@ package com.appchat.api;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+
+import com.appchat.Adapters.Json2EntityAdapter;
 import com.appchat.AppStateManager;
 import com.appchat.OperationCallback;
 import com.appchat.db.dao.ContactDao;
 import com.appchat.entities.Contact;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
+
 import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,19 +47,21 @@ public class ContactApi {
         this.callback = callback;
     }
 
+    //TODO: check that it works with List<JsonObject> instead of List<Contact>
     public void getAllContacts(MutableLiveData<List<Contact>> contacts, String token) {
-        Call<List<Contact>> call = webServiceApi.getAllContacts(token);
-        call.enqueue(new Callback<List<Contact>>() {
+        Call<List<JsonObject>> call = webServiceApi.getAllContacts(token);
+        call.enqueue(new Callback<List<JsonObject>>() {
             @Override
-            public void onResponse(@NonNull Call<List<Contact>> call, @NonNull Response<List<Contact>> response) {
+            public void onResponse(@NonNull Call<List<JsonObject>> call, @NonNull Response<List<JsonObject>> response) {
                 new Thread(() -> {
                     contactDao.clear();
                     if (response.body() == null) {
                         return;
                     }
 
-                    // add the all contacts to the local database
-                    for (Contact contact : response.body()) {
+                    // new implementation:
+                    List<Contact> contactList = Json2EntityAdapter.Json2ContactList(response.body());
+                    for (Contact contact : contactList) {
                         contactDao.insert(contact);
                     }
                     contacts.postValue(contactDao.getAllContacts());
@@ -58,38 +69,55 @@ public class ContactApi {
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Contact>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<JsonObject>> call, @NonNull Throwable t) {
             }
         });
     }
 
-    public void addContact(MutableLiveData<List<Contact>> contacts, Contact newContact, String token) {
-        Call<Void> call = webServiceApi.postContact(newContact.getName(), token);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                new Thread(() -> {
-                    if (response.isSuccessful()) {
-                        // Insert the new contact into the local database
-                        contactDao.insert(newContact);
+    public void addContact(MutableLiveData<List<Contact>> contacts, String newContactName, String token) {
+        try {
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("username", newContactName);
 
-                        // Update the MutableLiveData with the updated list of contacts
-                        contacts.postValue(contactDao.getAllContacts());
-                        callback.onSuccess();
-                    } else if(callback != null) {
+            RequestBody body = RequestBody.create(MediaType.parse("application/json"), requestBody.toString());
+            Call<JsonObject> call = webServiceApi.postContact(body, token);
+            call.enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                    new Thread(() -> {
+
+                        if (response.isSuccessful()) {
+                            JsonObject responseBody = response.body();
+                            if (responseBody == null) {
+                                callback.onFail();
+                                return;
+                            }
+
+                            // Create a new contact object with the id and name of the new contact
+                            Contact newContact = Json2EntityAdapter.JsonToContact(responseBody);
+                            contactDao.insert(newContact);
+
+                            // Update the MutableLiveData with the updated list of contacts
+                            contacts.postValue(contactDao.getAllContacts());
+                            callback.onSuccess();
+                        } else if(callback != null) {
+                            callback.onFail();
+                        }
+                    }).start();
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                    // Handle failure case, if needed
+                    if(callback != null) {
                         callback.onFail();
                     }
-                }).start();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                // Handle failure case, if needed
-                if(callback != null) {
-                    callback.onFail();
                 }
-            }
-        });
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            callback.onFail();
+        }
     }
 
     public void getContact(MutableLiveData<Contact> contactLiveData, String id, String token) {

@@ -24,14 +24,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/userImg"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginRight="@dimen/_4dp"
-                    android:background="@drawable/circle_profile_picture"
-                    android:contentDescription="Profile Picture"
-                    android:src="@mipmap/ofir_profile_picture_round" />
+                    android:contentDescription="Profile Picture" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -131,6 +129,7 @@
                 style="@style/InputBoxStyle" />
 
             <ImageView
+                android:id="@+id/sendBtn"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_send"

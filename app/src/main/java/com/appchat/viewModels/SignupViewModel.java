@@ -1,5 +1,4 @@
 package com.appchat.viewModels;
-import android.widget.ImageView;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -11,6 +10,8 @@ public class SignupViewModel extends ViewModel {
     private MutableLiveData<String> password;
     private MutableLiveData<String> confirmPassword;
     private MutableLiveData<String> displayName;
+
+    private MutableLiveData<String> profilePic;
 
     private MutableLiveData<SignupErrors> usernameError;
     private MutableLiveData<SignupErrors> passwordError;
@@ -82,5 +83,12 @@ public class SignupViewModel extends ViewModel {
             profilePicError = new MutableLiveData<SignupErrors>();
         }
         return profilePicError;
+    }
+
+    public MutableLiveData<String> getProfilePic() {
+        if (profilePic == null) {
+            profilePic = new MutableLiveData<String>();
+        }
+        return profilePic;
     }
 }

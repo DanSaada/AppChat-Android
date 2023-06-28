@@ -96,28 +96,7 @@
                 android:id="@+id/changeDisplayNameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/changeDisplayNameIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/change_display_name_icon"
-                    android:src="@drawable/ic_display_name"
-                    android:layout_marginBottom="@dimen/_10sp"/>
-
-                <Button
-                    android:id="@+id/changeDisplayNameButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/login_button_background"
-                    android:text="@string/change_display_name"
-                    android:textColor="#fff"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="@dimen/_10sp"
-                    android:layout_marginStart="5dp"/>
-
-            </LinearLayout>
+                android:orientation="horizontal"/>
 
             <LinearLayout
                 android:id="@+id/changeThemeLayout"

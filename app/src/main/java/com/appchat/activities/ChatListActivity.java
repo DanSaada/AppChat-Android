@@ -1,49 +1,82 @@
 package com.appchat.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.appchat.Adapters.ContactListAdapter;
+import com.appchat.OperationCallback;
 import com.appchat.R;
-import com.appchat.entities.Contact;
+import com.appchat.viewModels.ContactsViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
-import java.util.List;
 
-public class ChatListActivity extends AppCompatActivity {
+public class ChatListActivity extends AppCompatActivity implements OperationCallback {
+
+    private ContactsViewModel contactsViewModel;
+    private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_list);
 
+        contactsViewModel = new ViewModelProvider(this).get(ContactsViewModel.class);
+
+
         RecyclerView contactList = findViewById(R.id.chatListRecyclerView);
         final ContactListAdapter adapter = new ContactListAdapter(this);
         contactList.setAdapter(adapter);
         contactList.setLayoutManager(new LinearLayoutManager(this));
 
-        List<Contact> contacts = new ArrayList<>();
-        contacts.add(new Contact("1", "name", "lastMsg", "sentTime", "1", 0, R.drawable.cat));
-        contacts.add(new Contact("2", "name1", "lastMsg", "sentTime", "2", 0, R.drawable.cat));
-        contacts.add(new Contact("3", "name2", "lastMsg", "sentTime", "3", 0, R.drawable.cat));
-        contacts.add(new Contact("4", "name3", "lastMsg", "sentTime", "4", 0, R.drawable.cat));
-        contacts.add(new Contact("5", "name4", "lastMsg", "sentTime", "5", 0, R.drawable.cat));
-        contacts.add(new Contact("6", "name5", "lastMsg", "sentTime", "6", 0, R.drawable.cat));
-        contacts.add(new Contact("7", "name6", "lastMsg", "sentTime", "7", 0, R.drawable.cat));
-        contacts.add(new Contact("8", "name7", "lastMsg", "sentTime", "8", 0, R.drawable.cat));
-        contacts.add(new Contact("9", "name8", "lastMsg", "sentTime", "9", 0, R.drawable.cat));
-        adapter.setContacts(contacts);
+        contactsViewModel.getContacts().observe(this, contacts -> {
+            // Update the cached copy of the words in the adapter.
+            adapter.setContacts(contacts);
+            adapter.notifyDataSetChanged();
+        });
+        adapter.setContacts(contactsViewModel.getContacts().getValue());
 
         FloatingActionButton fabAddChat = findViewById(R.id.fabAddChat);
-        // TODO: change addContactFragment into Activity
         fabAddChat.setOnClickListener(v -> {
-            Intent intent = new Intent(ChatListActivity.this, AddContactFragment.class);
-            startActivity(intent);
+            AlertDialog.Builder builder = new AlertDialog.Builder(ChatListActivity.this);
+            final View customLayout = getLayoutInflater().inflate(R.layout.activity_add_contact, null);
+            builder.setView(customLayout);
+            dialog = builder.create();
+            ImageView exitBtn = customLayout.findViewById(R.id.Exit);
+            exitBtn.setOnClickListener(v1 -> dialog.dismiss());
+            Button addContactBtn = customLayout.findViewById(R.id.addButton);
+            addContactBtn.setOnClickListener(v1 -> {
+                EditText usernameEditText = customLayout.findViewById(R.id.usernameEditText);
+                String input = usernameEditText.getText().toString();
+                contactsViewModel.setCallback(this);
+                contactsViewModel.add(input);
         });
+        dialog.show();
+        });
+    }
+
+    @Override
+    public void onSuccess() {
+        runOnUiThread(() -> {
+            Toast.makeText(ChatListActivity.this, "Contact added successfully",
+                    Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
+    }
+
+
+    @Override
+    public void onFail() {
+        runOnUiThread(() -> Toast.makeText(ChatListActivity.this, "Something Went Wrong, Please Try Again",
+                Toast.LENGTH_SHORT).show());
     }
 }

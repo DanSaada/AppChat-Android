@@ -28,6 +28,7 @@ import com.appchat.OperationCallback;
 import com.appchat.R;
 import com.appchat.activities.signupServices.SignupErrors;
 import com.appchat.activities.signupServices.ValidateInputsService;
+import com.appchat.entities.converters.Base64TypeConverter;
 import com.appchat.viewModels.SignupViewModel;
 import com.appchat.viewModels.UserViewModel;
 import com.google.android.material.textfield.TextInputLayout;
@@ -144,6 +145,8 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
             Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
 
             profileImageView.setImageBitmap(rotatedBitmap);
+            String base64Image = Base64TypeConverter.convertBitmapToBase64String(rotatedBitmap);
+            signupViewModel.getProfilePic().setValue(base64Image);
             profileImageView.setVisibility(View.VISIBLE); // Set the visibility of profileImageView to visible
             signupViewModel.getProfilePicError().setValue(SignupErrors.OK);
         } catch (IOException e) {
@@ -305,17 +308,9 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
             String username = usernameEditText.getText().toString();
             String password = passwordEditText.getText().toString();
             String displayName = displayNameEditText.getText().toString();
-//            byte[] profileImage = Base64TypeConverter.fromBase64String(profileImageView.toString());
-            this.userViewModel.registerUser(username, password, displayName, profileImageView.toString());
-            if (isSignupSuccessful) {
-                Toast.makeText(this, "Signup successful", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-            else {
-                Toast.makeText(this, "Signup failed", Toast.LENGTH_SHORT).show();
-            }
-        }
-        else {
+            String profileImageViewString = signupViewModel.getProfilePic().getValue();
+            this.userViewModel.registerUser(username, password, displayName, profileImageViewString);
+        } else {
             Toast.makeText(this, "Please Fill All Fields Correctly", Toast.LENGTH_SHORT).show();
         }
     }
@@ -365,11 +360,12 @@ public class SignupActivity extends AppCompatActivity implements OperationCallba
 
     @Override
     public void onSuccess() {
-        this.isSignupSuccessful = true;
+        Toast.makeText(this, "Signup successful", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override
     public void onFail() {
-        this.isSignupSuccessful = false;
+        Toast.makeText(this, "Signup failed", Toast.LENGTH_SHORT).show();
     }
 }

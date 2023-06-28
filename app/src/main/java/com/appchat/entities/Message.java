@@ -1,5 +1,6 @@
 package com.appchat.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -10,25 +11,40 @@ import com.appchat.AppStateManager;
 public class Message {
 
     @PrimaryKey(autoGenerate = true)
-    private int msgId;
+    private int messageID;
+
+    @NonNull
+    private String chatID;
     private String content;
     private String created;
     private boolean sent;
-    private String userId;
-    private String contactId;
+    private String sender; // previous version: private String contactId;
+    private String receiver;
+
 
     public Message() {
 
     }
 
     @Ignore
-    public Message(String content, String created, boolean sent, String userId, String contactId) {
+    public Message(String content, String created, boolean sent, String sender, String receiver) {
         // the id is auto generated
         this.content = content;
         this.created = created;
         this.sent = sent;
-        this.userId = userId;
-        this.contactId = contactId;
+        this.sender = sender;
+        this.receiver = receiver;
+    }
+
+    @Ignore
+    public Message(String content, String created, boolean sent, String sender, String receiver, @NonNull String chatID) {
+        // the id is auto generated
+        this.content = content;
+        this.created = created;
+        this.sent = sent;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.chatID = chatID;
     }
 
     public boolean isSent() {
@@ -36,8 +52,8 @@ public class Message {
     }
 
     //SETTERS
-    public void setMsgId(int msgId) {
-        this.msgId = msgId;
+    public void setMessageID(int messageID) {
+        this.messageID = messageID;
     }
 
     public void setContent(String content) {
@@ -48,12 +64,12 @@ public class Message {
         this.created = created;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
-    public void setContactId(String contactId) {
-        this.contactId = contactId;
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
     public void setSent(boolean sent) {
@@ -61,8 +77,8 @@ public class Message {
     }
 
     //GETTERS
-    public int getMsgId() {
-        return msgId;
+    public int getMessageID() {
+        return messageID;
     }
 
     public String getContent() {
@@ -73,19 +89,24 @@ public class Message {
         return created;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getSender() {
+        return sender;
     }
 
-    public String getContactId() {
-        return contactId;
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public String getChatID() {
+        return chatID;
+    }
+
+    public void setChatID(String chatID) {
+        this.chatID = chatID;
     }
 
     public boolean isSentByLoggedUser() {
-        return userId.equals(AppStateManager.loggedUser);
+        return sender.equals(AppStateManager.loggedUser);
     }
 
-    public boolean isReceivedByLoggedUser() {
-        return contactId.equals(AppStateManager.loggedUser);
-    }
 }

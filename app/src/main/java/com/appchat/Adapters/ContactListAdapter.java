@@ -1,6 +1,11 @@
 package com.appchat.Adapters;
 
+
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,8 +13,10 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.appchat.AppStateManager;
 import com.appchat.R;
 import com.appchat.entities.Contact;
+import com.appchat.entities.converters.Base64TypeConverter;
 
 import java.util.List;
 
@@ -50,11 +57,33 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     public void onBindViewHolder(ContactListViewHolder holder, int position) {
         if (contacts != null) {
             final Contact current = contacts.get(position);
-            holder.contactName.setText(current.getName());
-            holder.lastMsg.setText(current.getLastMsg());
-            holder.sentTime.setText(current.getSentTime());
-//            holder.unreadCount.setText(current.getUnreadCount());
-            holder.contactImage.setImageResource(current.getContactImage());
+            holder.contactName.setText(current.getDisplayName());
+            holder.lastMsg.setText(current.getContent());
+            holder.sentTime.setText(current.getCreated());
+//            holder.unreadCount.setText(current.getUnreadCount()); TODO: implement unread count
+            String base64Image = current.getProfilePic();
+            Bitmap bitmap = Base64TypeConverter.convertBase64ToBitmap(base64Image);
+
+
+            // Set the click listener for the item
+            holder.itemView.setOnClickListener(view -> {
+
+                // pass relevant data to the ChatActivity
+                Context context = view.getContext();
+                Intent intent = new Intent(context, com.appchat.activities.ChatActivity.class);
+                intent.putExtra("chatID", current.getId());
+                intent.putExtra("displayName", current.getDisplayName());
+                intent.putExtra("profilePic", current.getProfilePic());
+                // set the current contactId with whom the user is chatting
+                AppStateManager.contactId = current.getUsername();
+                context.startActivity(intent);
+            });
+            if (bitmap != null) {
+                holder.contactImage.setImageBitmap(bitmap);
+            } else {
+                // Set a default image if conversion fails
+                holder.contactImage.setImageResource(R.drawable.cat);
+            }
         }
     }
 
@@ -73,4 +102,15 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     public List<Contact> getContacts() {
         return contacts;
     }
+
+    private Bitmap convertBase64ToBitmap(String base64String) {
+        if (base64String == null) {
+            return null;
+        }
+
+        byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+    }
+
+
 }
