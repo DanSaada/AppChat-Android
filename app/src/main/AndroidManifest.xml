@@ -30,6 +30,12 @@
         <activity
             android:name=".activities.AddContactActivity"
             android:exported="false" />
+
+        <service
+            android:name=".FirebaseService"
+            android:enabled="true"
+            android:exported="true"></service>
+
         <activity
             android:name=".activities.SettingsActivity"
             android:exported="false" />
