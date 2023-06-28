@@ -30,7 +30,11 @@
         <service
             android:name=".FirebaseService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name=".activities.SettingsActivity"
@@ -52,9 +56,6 @@
             android:exported="false" />
         <activity
             android:name=".activities.ChatListActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.AddContactFragment"
             android:exported="false" />
     </application>
 

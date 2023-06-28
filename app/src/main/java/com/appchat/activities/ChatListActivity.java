@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.appchat.Adapters.ContactListAdapter;
 import com.appchat.OperationCallback;
 import com.appchat.R;
+import com.appchat.SingletonFirebase;
+import com.appchat.entities.Message;
 import com.appchat.viewModels.ContactsViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -30,8 +33,10 @@ public class ChatListActivity extends AppCompatActivity implements OperationCall
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_list);
 
-        contactsViewModel = new ViewModelProvider(this).get(ContactsViewModel.class);
+        MutableLiveData<String> contactsFirebase = SingletonFirebase.getFirebaseContactInstance();
+        MutableLiveData<Message> messagesFirebase = SingletonFirebase.getFirebaseMessageInstance();
 
+        contactsViewModel = new ViewModelProvider(this).get(ContactsViewModel.class);
 
         RecyclerView contactList = findViewById(R.id.chatListRecyclerView);
         final ContactListAdapter adapter = new ContactListAdapter(this);
@@ -44,6 +49,15 @@ public class ChatListActivity extends AppCompatActivity implements OperationCall
             adapter.notifyDataSetChanged();
         });
         adapter.setContacts(contactsViewModel.getContacts().getValue());
+
+        //listen to view model changes.
+        contactsFirebase.observe(this, contacts -> {
+            contactsViewModel.reload();
+        });
+
+        messagesFirebase.observe(this, messages -> {
+            contactsViewModel.reload();
+        });
 
         FloatingActionButton fabAddChat = findViewById(R.id.fabAddChat);
         fabAddChat.setOnClickListener(v -> {

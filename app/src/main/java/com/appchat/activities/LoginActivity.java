@@ -14,15 +14,23 @@ import com.appchat.AppStateManager;
 import com.appchat.OperationCallback;
 import com.appchat.R;
 import com.appchat.api.UserApi;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class LoginActivity extends AppCompatActivity implements OperationCallback {
     private UserApi userApi;
+
+    private String androidToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         this.userApi = new UserApi();
+        FirebaseInstanceId.getInstance()
+                        .getInstanceId()
+                                .addOnSuccessListener(LoginActivity.this, instanceIdResult -> {
+                                    androidToken = instanceIdResult.getToken();
+                                });
 
         initUI();
     }
@@ -41,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements OperationCallbac
             EditText passwordEditText = findViewById(R.id.passwordEditText);
             this.userApi.setCallback(this);
             this.userApi.checkTokenForLogin(usernameEditText.getText().toString(),
-                    passwordEditText.getText().toString());
+                    passwordEditText.getText().toString(), androidToken);
         });
 
         ImageButton settingsButton = findViewById(R.id.settingsButton);

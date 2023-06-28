@@ -6,12 +6,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.appchat.Adapters.ChatMessagesListAdapter;
 import com.appchat.R;
+import com.appchat.SingletonFirebase;
+import com.appchat.entities.Message;
 import com.appchat.entities.converters.Base64TypeConverter;
 import com.appchat.viewModels.MessageViewModel;
 import com.appchat.viewModels.factories.MessageViewModelFactory;
@@ -28,9 +31,15 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        MutableLiveData<Message> messagesFirebase = SingletonFirebase.getFirebaseMessageInstance();
+
         initHeader();
         initRecyclerView();
         initSendMessage();
+
+        messagesFirebase.observe(this, messages -> {
+            messageViewModel.add(messages.getContent());
+        });
 
     }
 
