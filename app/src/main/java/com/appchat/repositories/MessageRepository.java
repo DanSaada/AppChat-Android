@@ -42,7 +42,9 @@ public class MessageRepository {
             super();
             // initialize chat's messages from local database
             this.chatID = chatID;
-            setValue(messageDao.getChatMessages(AppStateManager.loggedUser, AppStateManager.contactId));
+            // TODO: return if needed to "AppStateManager.loggedUser, AppStateManager.contactId"
+            List<Message> messages = messageDao.getChatMessages(chatID);
+            setValue(messages);
         }
 
         @Override
@@ -57,12 +59,13 @@ public class MessageRepository {
         this.messageApi.getAllMessages(this.messagesListData, this.token , chatID);
     }
 
-    protected void setMessagesListDataWithDbMessages(String chatID) {
-        new Thread(() -> {
-            messagesListData.postValue(messageDao
-                    .getChatMessages(AppStateManager.loggedUser, chatID));
-        }).start();
-    }
+//    protected void setMessagesListDataWithDbMessages() {
+//        new Thread(() -> {
+//            // TODO: return if needed to "AppStateManager.loggedUser, AppStateManager.contactId"
+//            messagesListData.postValue(messageDao
+//                    .getChatMessages());
+//        }).start();
+//    }
 
     public LiveData<List<Message>> get() {
         return messagesListData;

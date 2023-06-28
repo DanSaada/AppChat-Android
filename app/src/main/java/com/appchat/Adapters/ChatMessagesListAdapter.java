@@ -67,14 +67,13 @@ public class ChatMessagesListAdapter extends RecyclerView.Adapter<RecyclerView.V
     public int getItemViewType(int position) {
         Message message = messages.get(position);
 
+        // TODO: check that works
         if (message.isSentByLoggedUser()) {
             return VIEW_TYPE_SENT;
-        } else if (message.isReceivedByLoggedUser()) {
+        } else  {
             return VIEW_TYPE_RECEIVED;
         }
 
-        // Default view type
-        return VIEW_TYPE_SENT;
     }
 
     @Override

@@ -55,17 +55,11 @@ public class MessageApi {
                         return;
                     }
 
-//                    // add the all messages to the dao
-//                    for (Message message : response.body()) {
-//                        messageDao.insert(message);
-//                    }
-//                    messages.postValue(response.body());
-
-                    // new implementation:
                     List<Message> convertedMessages = Json2EntityAdapter.Json2MessageList(response.body());
                     for (Message message : convertedMessages) {
-                        messageDao.insert(message);
+                        message.setChatID(chatID);
                     }
+                    messageDao.insert(convertedMessages); //TODO: make sure that it works
                     messages.postValue(convertedMessages);
 
                 }).start();
@@ -98,11 +92,16 @@ public class MessageApi {
                             // Insert the new message into the local database in the relevant chat
                             Message newMessage = new Message(content, new Date().toString(),
                                     true, AppStateManager.loggedUser,
-                                    AppStateManager.contactId);
-                            messageDao.insert(newMessage);
+                                    AppStateManager.contactId, chatID);
+//                            messageDao.insert(newMessage);
 
                             // Update the MutableLiveData with the updated list of messages
-                            messages.postValue(messageDao.getChatMessages(AppStateManager.loggedUser, AppStateManager.contactId));
+                            // FIXME : return back to the previous version - AppStateManager.loggedUser, AppStateManager.contactId
+                            List<Message> updatedMessages = messageDao.getChatMessages(chatID);
+                            updatedMessages.add(newMessage);
+                            messageDao.clear();
+                            messageDao.insert(updatedMessages);
+                            messages.postValue(updatedMessages);
                         }
                     }).start();
                 }

@@ -1,5 +1,6 @@
 package com.appchat.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -11,7 +12,9 @@ public class Message {
 
     @PrimaryKey(autoGenerate = true)
     private int messageID;
-    private int chatID; // the id of the chat that this message belongs to FIXME: this is not used, might not be needed
+
+    @NonNull
+    private String chatID;
     private String content;
     private String created;
     private boolean sent;
@@ -34,7 +37,7 @@ public class Message {
     }
 
     @Ignore
-    public Message(String content, String created, boolean sent, String sender, String receiver, int chatID) {
+    public Message(String content, String created, boolean sent, String sender, String receiver, @NonNull String chatID) {
         // the id is auto generated
         this.content = content;
         this.created = created;
@@ -94,11 +97,11 @@ public class Message {
         return receiver;
     }
 
-    public int getChatID() {
+    public String getChatID() {
         return chatID;
     }
 
-    public void setChatID(int chatID) {
+    public void setChatID(String chatID) {
         this.chatID = chatID;
     }
 
@@ -106,7 +109,4 @@ public class Message {
         return sender.equals(AppStateManager.loggedUser);
     }
 
-    public boolean isReceivedByLoggedUser() {
-        return receiver.equals(AppStateManager.loggedUser);
-    }
 }
