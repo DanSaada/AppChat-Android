@@ -59,26 +59,6 @@ public class ContactApi {
                         return;
                     }
 
-//                    // add the all contacts to the local database
-//                    for (JsonObject jsonContact : response.body()) {
-//
-//                        String id = jsonContact.getAsJsonPrimitive("id").getAsString();
-//                        JsonObject userObject = jsonContact.getAsJsonObject("user");
-//                        String displayName = userObject.getAsJsonPrimitive("displayName").getAsString();
-//                        String username = userObject.getAsJsonPrimitive("username").getAsString();
-//                        String profilePic = userObject.getAsJsonPrimitive("profilePic").getAsString();
-//                        JsonObject lastMessageObject = jsonContact.getAsJsonObject("lastMessage");
-//                        Contact contact;
-//                        if (lastMessageObject == null) {
-//                            contact = new Contact(id, displayName, null, null, username, 0, profilePic);
-//                        } else {
-//                            String created = lastMessageObject.getAsJsonPrimitive("created").getAsString();
-//                            String content = lastMessageObject.getAsJsonPrimitive("content").getAsString();
-//                            contact = new Contact(id, displayName, content, created, username, 0, profilePic);
-//                        }
-//                        contactDao.insert(contact);
-//                    }
-
                     // new implementation:
                     List<Contact> contactList = Json2EntityAdapter.Json2ContactList(response.body());
                     for (Contact contact : contactList) {

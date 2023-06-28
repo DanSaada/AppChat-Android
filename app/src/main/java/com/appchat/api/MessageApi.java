@@ -2,6 +2,8 @@ package com.appchat.api;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+
+import com.appchat.Adapters.Json2EntityAdapter;
 import com.appchat.AppStateManager;
 import com.appchat.db.dao.MessageDao;
 import com.appchat.entities.Message;
@@ -41,7 +43,7 @@ public class MessageApi {
     }
 
     public void getAllMessages(MutableLiveData<List<Message>> messages, String token, String chatID) {
-        // FIXME: fix the call to the web service to get teh right parameters and convert correctly the response
+
         Call<List<JsonObject>> call = webServiceApi.getMessages(chatID, token);
         call.enqueue(new Callback<List<JsonObject>>() {
             @Override
@@ -58,6 +60,14 @@ public class MessageApi {
 //                        messageDao.insert(message);
 //                    }
 //                    messages.postValue(response.body());
+
+                    // new implementation:
+                    List<Message> convertedMessages = Json2EntityAdapter.Json2MessageList(response.body());
+                    for (Message message : convertedMessages) {
+                        messageDao.insert(message);
+                    }
+                    messages.postValue(convertedMessages);
+
                 }).start();
             }
 
