@@ -22,7 +22,7 @@ public interface WebServiceApi {
     //TOKENS
 
     @POST("api/Tokens")
-    Call<JsonObject> createToken(@Body User user, @Header("androidToken") String androidToken);
+    Call<JsonPrimitive> createToken(@Body User user, @Header("androidToken") String androidToken);
 
     //USERS
 

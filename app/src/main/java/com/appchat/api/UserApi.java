@@ -45,12 +45,12 @@ public class UserApi {
 
     public void checkTokenForLogin(String username, String password, String androidToken) {
         User user = new User(username, password);
-        Call<JsonObject> call = webServiceApi.createToken(user, androidToken);
+        Call<JsonPrimitive> call = webServiceApi.createToken(user, androidToken);
         // start the async network request and attache a callback to handle the response
-        call.enqueue(new Callback<JsonObject>() {
+        call.enqueue(new Callback<JsonPrimitive>() {
             // response is received from the server
             @Override
-            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+            public void onResponse(@NonNull Call<JsonPrimitive> call, @NonNull Response<JsonPrimitive> response) {
                 if (response.isSuccessful() && response.code() == 200 && response.body() != null) {
                     // extract the logged in user's token
                     String token = response.body().toString();
@@ -65,7 +65,7 @@ public class UserApi {
             }
             // failure in the network request.
             @Override
-            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<JsonPrimitive> call, @NonNull Throwable t) {
                 callback.onFail();
             }
         });

@@ -97,9 +97,9 @@ public class FirebaseService extends FirebaseMessagingService {
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
             // TODO: check for bugs from this if statement
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
+//            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+//                return;
+//            }
             notificationManager.notify(1, builder.build());
         }
         Map<String, String> data = remoteMessage.getData();

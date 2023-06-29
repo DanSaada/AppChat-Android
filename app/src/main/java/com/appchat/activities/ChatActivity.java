@@ -38,7 +38,7 @@ public class ChatActivity extends AppCompatActivity {
         initSendMessage();
 
         messagesFirebase.observe(this, messages -> {
-            messageViewModel.add(messages.getContent());
+            messageViewModel.reload();
         });
 
     }
