@@ -3,6 +3,7 @@ package com.appchat.activities;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,6 +38,9 @@ public class SettingsActivity extends AppCompatActivity {
             previousUiMode = getResources().getConfiguration().uiMode;
             recreate(); // Recreate the activity to reflect the new theme
         });
+
+        ImageView exitBtn = findViewById(R.id.Exit);
+        exitBtn.setOnClickListener(v -> finish());
     }
 
     private void setAppTheme(int themeResId) {
