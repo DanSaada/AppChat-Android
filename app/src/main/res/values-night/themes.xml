@@ -2,7 +2,6 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.AppChat" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <item name="colorPrimary">@color/night_mode_start_gradient_color</item>
         <!-- Add more customized attributes for the dark theme -->
     </style>
 </resources>
