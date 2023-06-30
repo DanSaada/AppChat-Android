@@ -69,9 +69,9 @@ public class ChatMessagesListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         // TODO: check that works
         if (message.isSentByLoggedUser()) {
-            return VIEW_TYPE_SENT;
-        } else  {
             return VIEW_TYPE_RECEIVED;
+        } else  {
+            return VIEW_TYPE_SENT;
         }
 
     }
