@@ -2,6 +2,7 @@ package com.appchat.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ import com.appchat.SingletonFirebase;
 import com.appchat.entities.Message;
 import com.appchat.viewModels.ContactsViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 
 
 public class ChatListActivity extends AppCompatActivity implements OperationCallback {
@@ -87,7 +89,13 @@ public class ChatListActivity extends AppCompatActivity implements OperationCall
 
         //when clicking on the logout button it's closing the app and logging out
         ImageView logoutBtn = findViewById(R.id.logoutButton);
-        logoutBtn.setOnClickListener(v -> finish());
+//        logoutBtn.setOnClickListener(v -> finish());
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLogoutDialog();
+            }
+        });
     }
 
     @Override
@@ -105,4 +113,34 @@ public class ChatListActivity extends AppCompatActivity implements OperationCall
         runOnUiThread(() -> Toast.makeText(ChatListActivity.this, "Something Went Wrong, Please Try Again",
                 Toast.LENGTH_SHORT).show());
     }
+
+    private void showLogoutDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_logout, null);
+
+        Button logoutConfirmButton = dialogView.findViewById(R.id.logoutConfirmButton);
+        Button logoutCancelButton = dialogView.findViewById(R.id.logoutCancelButton);
+
+        builder.setView(dialogView);
+        final AlertDialog dialog = builder.create();
+
+        logoutConfirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Perform logout action here
+                dialog.dismiss();
+            }
+        });
+
+        logoutCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
 }
