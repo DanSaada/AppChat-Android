@@ -76,9 +76,9 @@ $ git clone https://github.com/DanSaada/AppChat-Android.git
 
 
 # For running the Server - go into the repository.
-$ cd WebChat/Server
+$ cd AppChat-Android\app\src\main\java\com\appchat\Server
 
-# start the server.
+# start the server (copy the Server folder into a different project and execute it from there).
 $ npm start
 
 # For running the Client - go into the repository.
