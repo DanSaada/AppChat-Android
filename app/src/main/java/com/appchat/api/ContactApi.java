@@ -62,6 +62,13 @@ public class ContactApi {
                     // new implementation:
                     List<Contact> contactList = Json2EntityAdapter.Json2ContactList(response.body());
                     for (Contact contact : contactList) {
+                        String profilePicture = contact.getProfilePic();
+                        if (profilePicture.startsWith("data:image/jpeg;base64,")) {
+                            // Remove the prefix
+                            profilePicture = profilePicture.substring("data:image/jpeg;base64,".length());
+                            contact.setProfilePic(profilePicture);
+                        }
+
                         contactDao.insert(contact);
                     }
                     contacts.postValue(contactDao.getAllContacts());
@@ -95,6 +102,12 @@ public class ContactApi {
 
                             // Create a new contact object with the id and name of the new contact
                             Contact newContact = Json2EntityAdapter.JsonToContact(responseBody);
+                            String profilePicture = newContact.getProfilePic();
+                            if (profilePicture.startsWith("data:image/jpeg;base64,")) {
+                                // Remove the prefix
+                                profilePicture = profilePicture.substring("data:image/jpeg;base64,".length());
+                                newContact.setProfilePic(profilePicture);
+                            }
                             contactDao.insert(newContact);
 
                             // Update the MutableLiveData with the updated list of contacts
@@ -131,6 +144,12 @@ public class ContactApi {
                         // Update the MutableLiveData with the fetched contact
 
                         Contact contact = response.body();
+                        String profilePicture = contact.getProfilePic();
+                        if (profilePicture.startsWith("data:image/jpeg;base64,")) {
+                            // Remove the prefix
+                            profilePicture = profilePicture.substring("data:image/jpeg;base64,".length());
+                            contact.setProfilePic(profilePicture);
+                        }
 
                         // Update the MutableLiveData with the fetched contact
                         contactLiveData.postValue(contact);

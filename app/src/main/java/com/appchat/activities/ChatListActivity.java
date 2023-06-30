@@ -53,11 +53,11 @@ public class ChatListActivity extends AppCompatActivity implements OperationCall
 
         //listen to view model changes.
         contactsFirebase.observe(this, contacts -> {
-            contactsViewModel.reload();
+            contactsViewModel.refresh();
         });
 
         messagesFirebase.observe(this, messages -> {
-            contactsViewModel.reload();
+            contactsViewModel.refresh();
         });
 
         FloatingActionButton fabAddChat = findViewById(R.id.fabAddChat);
