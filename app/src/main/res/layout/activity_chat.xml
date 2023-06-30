@@ -67,12 +67,12 @@
                     android:src="@drawable/ic_magnifying_glass" />
 
                 <ImageView
-                    android:id="@+id/settingsButton"
+                    android:id="@+id/moreBtn"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginStart="8dp"
                     android:contentDescription="More Options Icon"
-                    android:src="@drawable/ic_settings"/>
+                    android:src="@drawable/ic_ellipsis_vertical"/>
 
                 <ImageView
                     android:id="@+id/Exit"

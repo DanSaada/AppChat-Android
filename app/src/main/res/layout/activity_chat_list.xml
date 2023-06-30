@@ -49,11 +49,12 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/dropdown_menu"
+                android:id="@+id/settingsButton"
                 android:layout_width="24dp"
                 android:layout_height="match_parent"
                 android:contentDescription="Dropdown Menu"
-                android:src="@drawable/ic_ellipsis_vertical" />
+                android:src="@drawable/ic_settings" />
+
 
         </LinearLayout>
 
