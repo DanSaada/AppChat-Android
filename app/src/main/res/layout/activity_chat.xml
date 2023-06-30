@@ -67,11 +67,23 @@
                     android:src="@drawable/ic_magnifying_glass" />
 
                 <ImageView
+                    android:id="@+id/settingsButton"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginStart="8dp"
                     android:contentDescription="More Options Icon"
-                    android:src="@drawable/ic_ellipsis_vertical" />
+                    android:src="@drawable/ic_settings"/>
+
+                <ImageView
+                    android:id="@+id/Exit"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_exit"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:padding="10dp"
+                    android:contentDescription="@string/exit_icon"
+                    android:onClick="openUserModal" />
 
             </LinearLayout>
 

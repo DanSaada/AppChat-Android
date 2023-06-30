@@ -1,5 +1,6 @@
 package com.appchat.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -40,7 +41,15 @@ public class ChatActivity extends AppCompatActivity {
         messagesFirebase.observe(this, messages -> {
             messageViewModel.reload();
         });
+        //when clicking on the exit button it's closing the chat activity
+        ImageView exitBtn = findViewById(R.id.Exit);
+        exitBtn.setOnClickListener(v -> finish());
 
+        ImageView settingsBtn = findViewById(R.id.settingsButton);
+        settingsBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(ChatActivity.this, SettingsActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void initHeader() {
