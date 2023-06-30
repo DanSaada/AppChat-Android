@@ -33,56 +33,6 @@ public class FirebaseService extends FirebaseMessagingService {
 
     }
 
-//    @Override
-//    public void onMessageReceived1(@NonNull RemoteMessage remoteMessage) {
-//        String type = "type";
-//        String user = "User";
-//
-//        // check if message contains a data payload.
-//        if (remoteMessage.getData().size() > 0) {
-//            String typeGot = remoteMessage.getData().get(type);
-//            String userGot = remoteMessage.getData().get(user);
-//
-//            // if got a new contact message, then show a proper notification
-//            if (typeGot.compareTo("Contact") == 0) {
-//                if (remoteMessage.getNotification() != null &&
-//                        (AppStateManager.loggedUser == null || AppStateManager.loggedUser.length() == 0 ||
-//                                userGot.compareTo(AppStateManager.loggedUser) == 0)) {
-//                    NotificationCompat.Builder builder = new NotificationCompat
-//                            .Builder(this, "1")
-//                            .setSmallIcon(R.drawable.webchat_logo)
-//                            .setContentTitle(remoteMessage.getNotification().getTitle())
-//                            .setContentText(remoteMessage.getNotification().getBody())
-//                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-//                    // show a notification to the user
-//                    AppStateManager.notificationManagerCompat.notify(contactsCounter++, builder.build());
-//                    // inform other components within the app about the new contact notification.
-//                    Intent intent = new Intent("notifyContact");
-//                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
-//                }
-//            } else if (typeGot.compareTo("Message") == 0) {
-//
-//                // if got a new message message, then show a proper notification
-//                if (remoteMessage.getNotification() != null &&
-//                        (AppStateManager.loggedUser == null || AppStateManager.loggedUser.length() == 0 ||
-//                                userGot.compareTo(AppStateManager.loggedUser) == 0)) {
-//                    NotificationCompat.Builder builder = new NotificationCompat
-//                            .Builder(this, "2")
-//                            .setSmallIcon(R.drawable.webchat_logo)
-//                            .setContentTitle("New message")
-//                            .setContentText(remoteMessage.getNotification().getTitle())
-//                            .setStyle(new NotificationCompat.BigTextStyle().bigText
-//                                    (remoteMessage.getNotification().getBody()))
-//                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-//                    AppStateManager.notificationManagerCompat.notify(messagesCounter++, builder.build());
-//                    Intent intent = new Intent("notifyMessage");
-//                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
-//                }
-//            }
-//        }
-//    }
-
-
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         MutableLiveData<String> contacts = SingletonFirebase.getFirebaseContactInstance();
@@ -96,7 +46,7 @@ public class FirebaseService extends FirebaseMessagingService {
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-            // TODO: check for bugs from this if statement
+
 //            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
 //                return;
 //            }
@@ -107,13 +57,10 @@ public class FirebaseService extends FirebaseMessagingService {
             return;
         }
         if (data.get("action").equals("addNewContact")) {
-            contacts.postValue("contact added");
+            contacts.postValue("new contact");
         } else if (data.get("action").equals("sendNewMessage")) {
-            String chatID = data.get("chatID");
             String senderUsername = data.get("senderUsername");
-            String senderDisplayName = data.get("senderDisplayName");
             String receiver = data.get("receiver");
-            String msgID = data.get("msgID");
             String date = data.get("date");
             messages.postValue(new Message(remoteMessage.getNotification().getBody(), date, true, senderUsername, receiver));
         }
@@ -128,5 +75,4 @@ public class FirebaseService extends FirebaseMessagingService {
             notificationManager.createNotificationChannel(channel);
         }
     }
-
 }

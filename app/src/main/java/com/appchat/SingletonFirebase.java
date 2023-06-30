@@ -8,9 +8,7 @@ public class SingletonFirebase {
     private static MutableLiveData<String> contactFirebase;
     private static MutableLiveData<Message> messageFirebase;
 
-    private SingletonFirebase() {
-        // Private constructor to prevent instantiation
-    }
+    private SingletonFirebase() {}
 
     public static synchronized MutableLiveData<String> getFirebaseContactInstance() {
         if (contactFirebase == null) {
@@ -18,8 +16,6 @@ public class SingletonFirebase {
         }
         return contactFirebase;
     }
-
-
 
     public static synchronized MutableLiveData<Message> getFirebaseMessageInstance() {
         if (messageFirebase == null) {

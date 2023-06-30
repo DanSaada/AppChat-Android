@@ -1,6 +1,5 @@
 package com.appchat.api;
 
-import com.appchat.FirebaseUserToken;
 import com.appchat.entities.Contact;
 import com.appchat.entities.User;
 import com.google.gson.JsonObject;
