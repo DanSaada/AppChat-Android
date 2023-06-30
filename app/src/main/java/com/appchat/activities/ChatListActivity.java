@@ -130,6 +130,7 @@ public class ChatListActivity extends AppCompatActivity implements OperationCall
             public void onClick(View v) {
                 // Perform logout action here
                 dialog.dismiss();
+                finish();
             }
         });
 
