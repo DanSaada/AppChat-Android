@@ -55,6 +55,14 @@
                 android:contentDescription="Dropdown Menu"
                 android:src="@drawable/ic_settings" />
 
+            <!-- Logout Button -->
+            <ImageView
+                android:id="@+id/logoutButton"
+                android:layout_width="24dp"
+                android:layout_height="match_parent"
+                android:contentDescription="Logout"
+                android:src="@drawable/ic_logout"
+                android:layout_marginStart="5dp"/>
 
         </LinearLayout>
 

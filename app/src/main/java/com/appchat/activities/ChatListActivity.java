@@ -78,11 +78,16 @@ public class ChatListActivity extends AppCompatActivity implements OperationCall
         dialog.show();
         });
 
+        // when clicking on the settings button it's opening the settings activity
         ImageView settingsBtn = findViewById(R.id.settingsButton);
         settingsBtn.setOnClickListener(v -> {
             Intent intent = new Intent(ChatListActivity.this, SettingsActivity.class);
             startActivity(intent);
         });
+
+        //when clicking on the logout button it's closing the app and logging out
+        ImageView logoutBtn = findViewById(R.id.logoutButton);
+        logoutBtn.setOnClickListener(v -> finish());
     }
 
     @Override
