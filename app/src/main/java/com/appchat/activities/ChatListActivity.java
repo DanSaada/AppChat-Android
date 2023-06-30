@@ -1,5 +1,6 @@
 package com.appchat.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -75,6 +76,12 @@ public class ChatListActivity extends AppCompatActivity implements OperationCall
                 contactsViewModel.add(input);
         });
         dialog.show();
+        });
+
+        ImageView settingsBtn = findViewById(R.id.settingsButton);
+        settingsBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(ChatListActivity.this, SettingsActivity.class);
+            startActivity(intent);
         });
     }
 

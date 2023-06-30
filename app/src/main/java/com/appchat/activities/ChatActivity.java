@@ -42,7 +42,9 @@ public class ChatActivity extends AppCompatActivity {
                 messageViewModel.refresh(chatID);
             }
         });
-
+        //when clicking on the exit button it's closing the chat activity
+        ImageView exitBtn = findViewById(R.id.Exit);
+        exitBtn.setOnClickListener(v -> finish());
     }
 
     private void initHeader() {
