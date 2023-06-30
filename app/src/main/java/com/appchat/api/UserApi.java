@@ -43,9 +43,9 @@ public class UserApi {
         this.callback = callback;
     }
 
-    public void checkTokenForLogin(String username, String password) {
+    public void checkTokenForLogin(String username, String password, String androidToken) {
         User user = new User(username, password);
-        Call<JsonPrimitive> call = webServiceApi.createToken(user);
+        Call<JsonPrimitive> call = webServiceApi.createToken(user, androidToken);
         // start the async network request and attache a callback to handle the response
         call.enqueue(new Callback<JsonPrimitive>() {
             // response is received from the server
@@ -73,7 +73,8 @@ public class UserApi {
 
     public void addUser(String username, String password, String displayName, String profilePic) {
         // create the new User object
-        User user = new User(username, password, displayName, profilePic);
+        String dbImgFormat = "data:image/jpeg;base64," + profilePic;
+        User user = new User(username, password, displayName, dbImgFormat);
         Call<JsonObject> call = webServiceApi.postUser(user);
         // start the async network request and attache a callback to handle the response
         call.enqueue(new Callback<JsonObject>() {
@@ -83,16 +84,11 @@ public class UserApi {
                 if (response.isSuccessful() && response.code() == 200 && response.body() != null) {
                     // add new user to the room database
 
-                    // debug
-                    System.out.println("UserApi.addUser(): " + response.body().toString());
-                    // end debug
+                    user.setProfilePic(profilePic);
                     userDao.insert(user);
                     callback.onSuccess();
                 } else {
 
-                    // debug
-                    System.out.println("UserApi.addUser(): failed -  " + response.body().toString());
-                    // end debug
                     callback.onFail();
                 }
             }

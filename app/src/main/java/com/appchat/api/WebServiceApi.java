@@ -21,7 +21,7 @@ public interface WebServiceApi {
     //TOKENS
 
     @POST("api/Tokens")
-    Call<JsonPrimitive> createToken(@Body User user);
+    Call<JsonPrimitive> createToken(@Body User user, @Header("androidToken") String androidToken);
 
     //USERS
 
