@@ -1,6 +1,7 @@
 package com.appchat.activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,8 @@ public class ChatListActivity extends AppCompatActivity implements OperationCall
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Check if night mode is enabled and if yes, apply corresponding theme
+        applyNightMode();
         setContentView(R.layout.activity_chat_list);
 
         MutableLiveData<String> contactsFirebase = SingletonFirebase.getFirebaseContactInstance();
@@ -96,6 +99,8 @@ public class ChatListActivity extends AppCompatActivity implements OperationCall
                 showLogoutDialog();
             }
         });
+
+
     }
 
     @Override
@@ -143,5 +148,16 @@ public class ChatListActivity extends AppCompatActivity implements OperationCall
 
         dialog.show();
     }
+
+    private void applyNightMode() {
+        int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        boolean isNightModeEnabled = nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
+
+        if (isNightModeEnabled) {
+            // Apply the night mode colors
+            setTheme(R.style.AppThemeNight);
+        }
+    }
+
 
 }

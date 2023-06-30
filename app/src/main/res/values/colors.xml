@@ -12,17 +12,6 @@
     <color name="start_gradient_color">#c850c0</color>
     <color name="end_gradient_color">#4158d0</color>
     <color name="colorAccent">#FF4081</color>
-
-    <!-- Night Mode Colors -->
-    <color name="night_mode_black">#FF000000</color>
-    <color name="night_mode_white">#FFFFFFFF</color>
-    <color name="night_mode_pink">#D271C3</color>
-    <color name="night_mode_header">#242424</color>
-    <color name="night_mode_received_message_color">#8C8C8C</color>
-    <color name="night_mode_sent_message_color">#99B66B</color>
-    <color name="night_mode_green">#8C8C8C</color>
-    <color name="night_mode_cool_light_purple">#7265AE</color>
-    <color name="night_mode_start_gradient_color">#c850c0</color>
-    <color name="night_mode_end_gradient_color">#4158d0</color>
-    <color name="night_mode_colorAccent">#FF4081</color>
+    <color name="background_color_night">#CCCCCC</color>
+    <color name="text_color_night">#FFFFFF</color>
 </resources>

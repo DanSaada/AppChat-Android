@@ -10,6 +10,13 @@
         <item name="android:windowBackground">@android:color/background_dark</item>
     </style>
 
+    <!-- Night Mode Theme (inherits from AppThemeDark) -->
+    <style name="AppThemeNight" parent="AppThemeDark">
+        <item name="android:windowBackground">@color/background_color_night</item>
+        <item name="android:textColor">@color/text_color_night</item>
+        <!-- Add other night mode theme attributes here -->
+    </style>
+
     <!-- Apply Material Components style to FriendMessageStyle -->
     <style name="FriendMessageStyle" parent="Widget.MaterialComponents.CardView">
         <item name="android:background">@drawable/friend_message_background</item>

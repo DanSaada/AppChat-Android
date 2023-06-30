@@ -139,7 +139,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/searchContainer"
-                android:background="@android:color/white" />
+                android:background="?attr/backgroundColor" />
 
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
